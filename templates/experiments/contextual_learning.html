@@ -1,0 +1,65 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="{% static "js/pace.js" %}"></script>
+    <link href="{% static "css/pace.css" %}" rel="stylesheet" type="text/css"></link>
+    <script src="https://cdn.rawgit.com/meetselva/attrchange/master/js/attrchange.js"></script>
+<script src="https://cdn.rawgit.com/meetselva/attrchange/master/js/attrchange_ext.js"></script>
+    <script src="{% static "js/jsPsych/jspsych.js" %}"></script>
+    <script src="{% static "js/jsPsych/plugins/jspsych-text.js" %}"></script>
+    <script src="{% static "js/jsPsych/plugins/jspsych-single-stim.js" %}"></script>
+    <link href="{% static "css/jspsych.css" %}" rel="stylesheet" type="text/css"></link>
+    <script src="{% static "js/cl.js" %}"></script>
+  </head>
+  <body>
+    <div id="target" style="display: hide;"></div>
+  </body>
+  <script>
+
+   function getData(callback) {
+     $.ajax({
+       type: 'GET',
+       url: '{% url 'get_data' %}',
+       success: function(data) {
+         callback(data);
+       }
+     })
+   }
+
+   function initExp(data) {
+     missing_to_stop = 8;
+     missed = 0;
+     itprob = 1/25;
+     words = data.stimuli;
+     boundary_words = '';
+
+     
+     timeline = getTimeline(words, itprob);
+
+     jsPsych.init({
+       timeline: timeline,
+       default_iti: 0,
+       display_element: $('#target')
+     });
+   }
+
+   
+   
+   $(function() {
+     $('#target').hide();
+     getData(initExp);
+     $('body').attrchange({
+       trackValues: true,
+       callback: function(e) {
+         $('#target').show();
+       }
+     });
+   });
+   
+
+  </script>
+</html>
+
