@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^$', Home.as_view(), name='home'),
     url(r'^contextual_learning/$', MainExperiment.as_view(), name='home'),
     url(r'^get_data/$', 'experiments.views.get_data', name='get_data'),
+    url(r'^get_parameters/$', 'experiments.views.get_parameters', name='get_parameters'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT, 'show_indexes': True}),
 ]

@@ -4,10 +4,10 @@
   <head>
     <title>My experiment</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="{% static "js/pace.js" %}"></script>
+    <script src="{% static "js/pace.js" %}"></script>
     <link href="{% static "css/pace.css" %}" rel="stylesheet" type="text/css"></link>
     <script src="https://cdn.rawgit.com/meetselva/attrchange/master/js/attrchange.js"></script>
-<script src="https://cdn.rawgit.com/meetselva/attrchange/master/js/attrchange_ext.js"></script>
+    <script src="https://cdn.rawgit.com/meetselva/attrchange/master/js/attrchange_ext.js"></script>
     <script src="{% static "js/jsPsych/jspsych.js" %}"></script>
     <script src="{% static "js/jsPsych/plugins/jspsych-text.js" %}"></script>
     <script src="{% static "js/jsPsych/plugins/jspsych-single-stim.js" %}"></script>
@@ -15,46 +15,38 @@
     <script src="{% static "js/cl.js" %}"></script>
   </head>
   <body>
-    <div id="target" style="display: hide;"></div>
+    <div id="target"></div>
   </body>
   <script>
+   var experiment = 'contextual_learning';
 
-   function getData(callback) {
-     $.ajax({
-       type: 'GET',
-       url: '{% url 'get_data' %}',
-       success: function(data) {
-         callback(data);
-       }
-     })
-   }
+   // fetch the data from the server
+   var task1 = $.ajax(ajax_call('{% url 'get_data' %}', {experiment: experiment, task: 'task1'}));
+   var task2 = $.ajax(ajax_call('{% url 'get_data' %}', {experiment: experiment, task: 'task2'}));
+   var task3 = $.ajax(ajax_call('{% url 'get_data' %}', {experiment: experiment, task: 'task3'}));
+   var parameters = $.ajax(ajax_call('{% url 'get_parameters' %}', {experiment: experiment})); 
 
-   function initExp(data) {
-     missing_to_stop = 8;
-     missed = 0;
-     itprob = 1/25;
-     words = data.stimuli;
-     boundary_words = '';
-
-     
-     timeline = getTimeline(words, itprob);
-
-     jsPsych.init({
-       timeline: timeline,
-       default_iti: 0,
-       display_element: $('#target')
-     });
-   }
-
-   
-   
    $(function() {
      $('#target').hide();
-     getData(initExp);
+     $.when(task1, task2, task3, parameters).done(function(task1, task2, task3, parameters) {
+       parameters = parameters[0];
+       task1 = task_factory('task1', task1[0].stimuli, parameters);
+       task2 = task_factory('task2', task2[0].stimuli, parameters);
+       // task3 = task_factory('task3', task3[0].stimuli, parameters);
+       timeline = [task1.getTimeline(), task2.getTimeline()];
+       timeline.flatten();
+       
+       jsPsych.init({
+         timeline: timeline,
+         default_iti: 0,
+         display_element: $('#target')
+       });
+     });
      $('body').attrchange({
        trackValues: true,
        callback: function(e) {
-         $('#target').show();
+         if ( e.newValue === '  pace-done')
+           $('#target').show();
        }
      });
    });
