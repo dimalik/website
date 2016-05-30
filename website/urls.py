@@ -14,19 +14,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf import settings
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 
 
 from website.views import Home
-from experiments.views import MainExperiment
+from experiments.views import MainExperiment, GetForm
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', Home.as_view(), name='home'),
     url(r'^contextual_learning/$', MainExperiment.as_view(), name='home'),
     url(r'^get_data/$', 'experiments.views.get_data', name='get_data'),
-    url(r'^get_parameters/$', 'experiments.views.get_parameters', name='get_parameters'),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT, 'show_indexes': True}),
+    url(r'^get_parameters/$', 'experiments.views.get_parameters',
+        name='get_parameters'),
+    url(r'^get_questions/$', 'experiments.views.get_questions',
+        name='get_questions'),
+    url(r'^get_form/(?P<form_name>\w+)$', GetForm.as_view(), name='get_form'),
+    url(r'^save_data/$', 'experiments.views.save_data', name='save_data'),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.STATIC_ROOT, 'show_indexes': True}),
+    url(r'^tinymce/', include('tinymce.urls')),
 ]

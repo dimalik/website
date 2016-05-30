@@ -1,3 +1,12 @@
+var Task = function() {
+  if (this.constructor === Task)
+    throw new Error("Cannot instantiate abstract class Task");
+};
+
+Task.prototype.getTimeline = function() {
+  throw new Error("Not Implemented Yet");
+};
+
 /*
  Task 1 Specification
  ====================
@@ -18,6 +27,7 @@
 */
 
 function Task1(stream, parameters) {
+  Task.call(this, arguments);
   if (stream.constructor === Array && stream.length > 0)
     this.stream = stream;
   else
@@ -40,45 +50,6 @@ function Task1(stream, parameters) {
     missed++;
   };
 
-  var consent1 = {
-    type: 'single-stim',
-    stimulus: "<div><p>Welcome to this language experiment conducted by the Department of Theoretical and Applied Linguistics, University of Cambridge</p><p>Principal Investigator: Dimitrios Alikaniotis</p><p style='text-align: center;'><strong>Note that this experiment can only be done on a laptop or desktop computer</strong></p><h3>INFORMATION:</h3><p>Before you choose to participate in this study it is important that you read the following information to be sure that you understand what your participation will involve.</p><h3>PROCEDURES:</h3><p>If you wish and agree to participate in this study, you will be asked to respond to a series of stimuli in a reaction time task. The total time required to complete the study is estimated to be 30 minutes.</p><br /><br /><p>Press spacebar to advance ...</p></div>",
-    is_html: true,
-    choices: [' '],
-    response_ends_trial: true
-  };
-
-  this.getConsent1 = function() {
-    return consent1;
-  };
-
-  var consent2 = {
-    type: 'single-stim',
-    stimulus: "<h3>POTENTIAL BENEFITS:</h3><p>By participating in this study the fields of psychology and linguistics will benefit from your participation by addressing some important questions pertaining to the topic.</p><h3>COMPENSATION:</h3><p>You will be paid £3 upon completion of the study</p><h3>VOLUNTARY PARTICIPATION:</h3><p>Participation in this study is voluntary. You may discontinue at any time for any reason, but payment can only be made on completion of the whole study.</p><h3>CONFIDENTIALITY:</h3><p>Each participant’s documented consent to participate and corresponding data will remain confidential.</p><br/><p>Press spacebar to advance ...</p>",
-    is_html: true,
-    choices: [' '],
-    response_ends_trial: true
-  };
-
-  this.getConsent2 = function() {
-    return consent2;
-  };
-
-  var concentration_warning = {
-    type: 'single-stim',
-    stimulus: "<p>Concentration is essential for successful completion of this experiment. Therefore you have to make sure that you have shut down all distracting windows.</p><p style='font-weight: bold;'>Only continue if you are sure you will not be interrupted for the next 30 minutes.</p><h4>Press spacebar to proceed to detailed instructions</h4>",
-    is_html: true,
-    choices: [' '],
-    response_ends_trial: true,
-    on_finish: function() {
-      fixCentre($('#target'));
-    }
-  };
-
-  this.getConcentrationWarning = function() {
-    return concentration_warning;
-  };
-  
   var too_late_message = {
     type: 'single-stim',
     is_html: true,
@@ -118,6 +89,9 @@ function Task1(stream, parameters) {
   };
 }
 
+Task1.prototype = Object.create(Task.prototype);
+Task1.prototype.constructor = Task1;
+
 Task1.prototype.get_with_critical = function(word) {
   dict = this.get_default_single_stim(word);
   dict.choices = [this.attention_key];
@@ -140,9 +114,6 @@ Task1.prototype.get_default_single_stim = function(word) {
 
 Task1.prototype.getTimeline = function() {
   timeline = [];
-  timeline.push(this.getConsent1());
-  timeline.push(this.getConsent2());
-  timeline.push(this.getConcentrationWarning());
   for (i=0; i<this.stream.length; i++) {
     if (Math.random() > this.italics_probability)
       timeline.push(this.get_default_single_stim(this.stream[i]));
@@ -167,6 +138,7 @@ Task1.prototype.getTimeline = function() {
 
 
 function Task2(stream, parameters) {
+  Task.call(this, arguments);
   if (stream.constructor === Array && stream.length > 0)
     this.stream = stream;
   else
@@ -175,22 +147,10 @@ function Task2(stream, parameters) {
   if (parameters === undefined) parameters = {};
   this.timing_response = (parameters.timing_response === undefined) ? 1500: parameters.timing_response;
 
-  var newTask = {
-    type: 'single-stim',
-    is_html: true,
-    choices: [' '],
-    timing_response: -1,
-    response_ends_trial: true,
-    stimulus: '<p>Now the task will change a bit...<p>' +
-      '<p>World\'s languages use boundaries such as pauses in speech, fullstops in writing etc. to mark</p>' +
-      '<p>to mark that the end of a topic. Your task in this phase is to press the spacebar at any time</p>' +
-      '<p>it feels that there is a <i>natural</i> pause in the stream.</p>'
-  };
-
-  this.getNewTask = function() {
-    return newTask;
-  };
 }
+
+Task2.prototype = Object.create(Task.prototype);
+Task2.prototype.constructor = Task2;
 
 Task2.prototype.getStimulus = function(word) {
   return {
@@ -205,7 +165,6 @@ Task2.prototype.getStimulus = function(word) {
 
 Task2.prototype.getTimeline = function() {
   timeline = [];
-  timeline.push(this.getNewTask());
   for (i=0; i<this.stream.length; i++)
     timeline.push(this.getStimulus(this.stream[i]));
   return timeline;
@@ -227,6 +186,7 @@ Task2.prototype.getTimeline = function() {
 
 
 function Task3(pairs, parameters) {
+  Task.call(this, arguments);
   if (pairs.constructor === Array && pairs.length > 0 && pairs[0].length === 2)
     this.pairs = pairs;
   var that = this;
@@ -261,6 +221,8 @@ function Task3(pairs, parameters) {
   };
 }
 
+Task3.prototype = Object.create(Task.prototype);
+Task3.prototype.constructor = Task3;
 
 Task3.prototype.makeTrial = function(prime, target) {
   trial = [];
@@ -323,6 +285,17 @@ function fixCentre(target_object) {
   });
 }
 
+function unfixCentre(target_object) {
+  target_object.css({
+    position: 'static',
+    left: 'auto',
+    top: 'auto',
+    'margin-left': 'auto',
+    'margin-top': '50px',
+    'text-align': 'start'
+  });
+}
+
 Array.prototype.flatten = function() {
   var merged = [].concat.apply([], this);
   this.length = 0;
@@ -353,121 +326,40 @@ function task_factory(task_name, stream, parameters) {
 }
 
 
+function fixTasks12(stimuli, task1_size, task2_size) {
+  var task1_stimuli = [];
+  var task2_stimuli = [];
+  
+  for (i=0; i<task1_size; i++)
+    task1_stimuli.push(stimuli[i]);
+  for (i=0; i<task2_size; i++)
+    task2_stimuli.push(stimuli[i+task1_size]);
 
-
-
-
-
-
-
-/* Temp bin
-
-/*
- Generic stimuli
-
-
-
-var consent1 = {
-  type: 'single-stim',
-  stimulus: "<div><p>Welcome to this language experiment conducted by the Department of Theoretical and Applied Linguistics, University of Cambridge</p><p>Principal Investigator: Dimitrios Alikaniotis</p><p style='text-align: center;'><strong>Note that this experiment can only be done on a laptop or desktop computer</strong></p><h3>INFORMATION:</h3><p>Before you choose to participate in this study it is important that you read the following information to be sure that you understand what your participation will involve.</p><h3>PROCEDURES:</h3><p>If you wish and agree to participate in this study, you will be asked to respond to a series of stimuli in a reaction time task. The total time required to complete the study is estimated to be 30 minutes.</p><br /><br /><p>Press spacebar to advance ...</p></div>",
-  is_html: true,
-  choices: [' '],
-  response_ends_trial: true
-};
-
-var consent2 = {
-  type: 'single-stim',
-  stimulus: "<h3>POTENTIAL BENEFITS:</h3><p>By participating in this study the fields of psychology and linguistics will benefit from your participation by addressing some important questions pertaining to the topic.</p><h3>COMPENSATION:</h3><p>You will be paid £3 upon completion of the study</p><h3>VOLUNTARY PARTICIPATION:</h3><p>Participation in this study is voluntary. You may discontinue at any time for any reason, but payment can only be made on completion of the whole study.</p><h3>CONFIDENTIALITY:</h3><p>Each participant’s documented consent to participate and corresponding data will remain confidential.</p><br/><p>Press spacebar to advance ...</p>",
-  is_html: true,
-  choices: [' '],
-  response_ends_trial: true
-};
-
-var concentration_warning = {
-  type: 'single-stim',
-  stimulus: "<p>Concentration is essential for successful completion of this experiment. Therefore you have to make sure that you have shut down all distracting windows.</p><p style='font-weight: bold;'>Only continue if you are sure you will not be interrupted for the next 30 minutes.</p><h4>Press spacebar to proceed to detailed instructions</h4>",
-  is_html: true,
-  choices: [' '],
-  response_ends_trial: true,
-  on_finish: function() {
-    
-    fixCentre($('#target'));
-  }
-};
-
-function get_default_single_stim(word) {
-  return {
-    type: 'single-stim',
-    stimulus: word,
-    is_html: true,
-    choices: [],
-    timing_response: 1500,
-    response_ends_trial: false
-  };         
+  return [task1_stimuli, task2_stimuli];
 }
 
-function get_with_critical(word) {
-  dict = get_default_single_stim(word);
-  dict.choices = ['i'];
-  dict.timing_response = 3000;
-  dict.response_ends_trial = true;
-  dict.stimulus = '<i>' + word + '</i>';
-  return dict;
-}
 
-var too_late_message = {
-  type: 'single-stim',
-  is_html: true,
-  choices: [' '],
-  timing_response: -1,
-  response_ends_trial: true,
-  stimulus: '<p>Oops... it seems that you missed to indicate whether the text was in italics.</p>' +
-    '<p>Remember that if you have 8 (eight) misses then the experiment will automatically close</p>' +
-    '<p>and you won\'t be able to get paid</p><p>You can indicate whether the word was in italics</p>' +
-    '<p>by pressing the \'i\' key</p>' + 
-    '<p>Press space to continue</p>'
-};
-
-var checkMissing = {
-  timeline: [too_late_message],
-  conditional_function: function() {
-    var data = jsPsych.data.getLastTrialData();
-    if (data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode('i')) {
-      return false;
-    } else {
-      missed += 1;
-      if (missed >= missing_to_stop)
-        jsPsych.endExperiment('<p>We are sorry but it seems that you have missed a lot of trials</p>' +
-                              '<p>and the experiment can\'t go on and you will not be paid.</p>' +
-                              '<p>you can now close this window</p>');
-      return true;
+function save_data(experiment_name, save_path, middleware_token, data, opt_data){
+  var data_table = experiment_name;
+  $.ajax({
+    type: 'post',
+    cache: false,
+    url: save_path,
+    data: {
+      table: data_table,
+      json: JSON.stringify(data),
+      opt_data: opt_data,
+      csrfmiddlewaretoken: middleware_token
+    },
+    success: function(output) {
+      console.log(output);
     }
-  }
-};
-
-function getTimeline(words, itprob) {
-  timeline = [];
-  timeline.push(consent1);
-  timeline.push(consent2);
-  timeline.push(concentration_warning);
-  for (i=0; i<words.length; i++) {
-    if (Math.random() > itprob)
-      timeline.push(get_default_single_stim(words[i]));
-    else {
-      timeline.push(get_with_critical(words[i]));
-      timeline.push(checkMissing);
-    }
-  }
-  return timeline;
+  });
 }
 
-function makeTrial(prime, target) {
-    trial = [];
-    trial.push(cross);
-    trial.push(get_default_prime(prime));
-    trial.push(blank);
-    trial.push(get_default_target(target));
-    return trial;
+function check_form(elem) {
+  if (!$('#participant-form').valid())
+    return false;
+  participant_data.push($('#participant-form').serializeArray());
+  return true;
 }
-
-*/

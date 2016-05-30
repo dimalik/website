@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'experiments'
+    'experiments',
+    'jspsych',
+    'tinymce'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -75,10 +77,21 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'da',
+        'USER': 'da',
+        'PASSWORD': 'alis1212',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -125,4 +138,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = '/home/da352/website_static/'
+STATIC_ROOT = '/home/da/Projects/website/website_static/'
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,xhtmlxtras,paste,searchreplace",
+    'theme': "advanced",
+    "theme_advanced_buttons3_add": "cite, abbr",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+    "width": "80%",
+    "height": "300px",
+}
+# TINYMCE_COMPRESSOR = True
