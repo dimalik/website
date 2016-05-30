@@ -1,0 +1,183 @@
+<div id="bio-info">
+  <form class="form-horizontal" action="" id="participant-form">
+    <fieldset>
+
+      <!-- Form Name -->
+      <legend style="text-align:center;">Demographic Information</legend>
+      <p class="bg-info" style="padding: 5px;"> Please provide some demographic information about yourself</p>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="prolificID">What is your Prolific ID</label>
+        <div class="col-md-4">
+          <input id="prolificID" name="prolificID" placeholder="" class="form-control input-md" required="" type="text">
+          <span class="help-block">Please provide your Prolific ID so that your payment can be processed correctly</span>
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="age">How old are you (to the nearest year)?</label>
+        <div class="col-md-4">
+          <input id="age" name="age" placeholder="" class="form-control input-md" type="number">
+
+        </div>
+      </div>
+
+      <!-- Multiple Radios -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="gender">What is your gender?</label>
+        <div class="col-md-4">
+          <div class="radio">
+            <label for="gender-0">
+              <input name="gender" id="gender-0" value="male" checked="checked" type="radio">
+              Male
+            </label>
+	  </div>
+          <div class="radio">
+            <label for="gender-1">
+              <input name="gender" id="gender-1" value="female" type="radio">
+              Female
+            </label>
+	  </div>
+          <div class="radio">
+            <label for="gender-2">
+              <input name="gender" id="gender-2" value="other" type="radio">
+              Other
+            </label>
+	  </div>
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="subject">What is your main occupation or subject of study?</label>
+        <div class="col-md-4">
+          <input id="subject" name="subject" placeholder="" class="form-control input-md" type="text">
+
+        </div>
+      </div>
+
+      <!-- Multiple Checkboxes -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="qualifications">Do you hold any of these qualifications?</label>
+        <div class="col-md-4">
+          <div class="checkbox">
+            <label for="qualifications-0">
+              <input name="qualifications" id="qualifications-0" value="ug" type="checkbox">
+              Undergraduate
+            </label>
+	  </div>
+          <div class="checkbox">
+            <label for="qualifications-1">
+              <input name="qualifications" id="qualifications-1" value="pg" type="checkbox">
+              Postgraduate
+            </label>
+	  </div>
+          <div class="checkbox">
+            <label for="qualifications-2">
+              <input name="qualifications" id="qualifications-2" value="phd" type="checkbox">
+              PhD
+            </label>
+	  </div>
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="nativelang">What is your native language (or languages if you were brought up bilingually)?</label>
+        <div class="col-md-4">
+          <input id="nativelang" name="nativelang" placeholder="" class="form-control input-md" required="" type="text">
+
+        </div>
+      </div>
+
+      <div class="language-grouping">
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="addlanguages">Do you know any other languages? (including Latin, Ancient Greek etc.)</label>
+        <div class="col-md-4">
+          <button id="addlanguages" name="addlanguages" class="btn btn-primary" type="button">Add Language</button>
+        </div>
+      </div>
+
+
+      <!-- Button -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="start"></label>
+        <div class="col-md-4">
+          <button id="start" name="start" class="btn btn-primary jspsych-btn">Continue</button>
+        </div>
+      </div>
+
+    </fieldset>
+  </form>
+
+</div>
+<script>
+ $('.language-grouping').hide();
+ languages_added = 0;
+ $('#addlanguages').click(function() {
+   addLanguage();
+ })
+ function addLanguage() {
+   languages_added++;
+
+   var main_div = document.createElement("div");
+   
+   var div_language = document.createElement("div");
+   $(div_language).attr("class", "form-group");
+   var label_language = document.createElement("label");
+   $(label_language).attr({"class": "col-md-4 control-label", "for": "language" + languages_added});
+   $(label_language).text('Language');
+   $(div_language).append(label_language);
+   var div_language_input = document.createElement("div");
+   $(div_language_input).attr("class", "col-md-4");
+   var input_language = document.createElement("input");
+   $(input_language).attr({"id": "language" + languages_added,
+                           "name": "language" + languages_added,
+                           "placeholder": "",
+                           "class": "form-control input-md",
+                           "type": "text"});
+   $(div_language_input).append(input_language);
+   $(div_language).append(div_language_input);
+
+
+   var div_level = document.createElement("div");
+   $(div_level).attr("class", "form-group");
+   var label_level = document.createElement("label");
+   $(label_level).attr({"class": "col-md-4 control-label", "for": "languagelevel" + languages_added});
+   $(label_level).text('Level');
+   $(div_level).append(label_level);
+   var div_level_checkboxes = document.createElement("div");
+   $(div_level_checkboxes).attr("class", "col-md-4");
+
+   var levels = ['Beginner', 'Lower Intermediate', 'Upper Intermediate', 'Advanced'];
+
+   for (i=0; i<levels.length; i++) {
+     var div_checkbox = document.createElement("div");
+     $(div_checkbox).attr("class", "radio");
+     var label_checkbox = document.createElement("label");
+     $(label_checkbox).attr({"for": "languagelevel-" + i + "-" + languages_added});
+     var input_checkbox = document.createElement("input"); 
+     $(input_checkbox).attr({"id": "languagelevel-" + i + "-" + languages_added,
+                             "name": "languagelevel" + languages_added,
+                             "type": "radio",
+                             "value": i});
+     $(label_checkbox).append(input_checkbox);
+     $(label_checkbox).append(levels[i]);
+     $(div_checkbox).append(label_checkbox);
+     $(div_level_checkboxes).append(div_checkbox);
+   }
+
+
+
+   $(div_level).append(div_level_checkboxes);
+   $(main_div).append(div_language);
+   $(main_div).append(div_level);
+   
+   $('.language-grouping').append(main_div).show();
+   
+ }
+</script>

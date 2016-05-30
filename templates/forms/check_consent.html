@@ -1,0 +1,29 @@
+<div id="consent">
+  <div class="warning"></div>
+  <p>
+    Do you agree to participate in the study?
+  </p>
+  <p>
+    <form action="" id="participant-form">
+      <input type="radio" name="yes" value="yes"> Yes<br>
+      <input type="radio" name="yes" value="no"> No<br>
+    </form>
+  </p>
+  <button type="button" id="start">Start Experiment</button>
+</div>
+
+<script>
+ $('#start').hide();
+ $('#participant-form input').on('change', function() {
+   var val = $('input[name=yes]:checked', '#participant-form').val();
+   if (val === 'yes')
+     $('#start').click();
+   else {
+     $('.warning').html('<p class="bg-danger" style="padding: 10px;">Are you sure you wish to end this experiment? ' +
+                        'If yes, then please close this window immediately, ' +
+                        'otherwise please click "yes" below.</p>');
+     $('.warning').show();
+   }
+ });
+
+</script>
