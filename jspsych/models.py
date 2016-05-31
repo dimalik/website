@@ -7,9 +7,10 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.urlresolvers import reverse
 
 from tinymce.models import HTMLField
+from polymorphic.models import PolymorphicModel
 
 
-class JSPsychPlugin(models.Model):
+class JSPsychPlugin(PolymorphicModel):
 
     name = models.CharField(max_length=255)
     timing_post_trial = models.IntegerField(default=1000, null=True,
@@ -22,9 +23,6 @@ for the html.",
         null=True)
     data = models.TextField(blank=True, null=True)
     display_element = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        abstract = True
 
     def __unicode__(self):
         return self.name
@@ -40,7 +38,7 @@ for the html.",
 class JSPsychText(JSPsychPlugin):
 
     text = HTMLField()
-    cont_key = ArrayField(models.CharField(max_length=5), blank=True)
+    cont_key = models.CharField(max_length=5, blank=True)
 
     @property
     def type(self):
@@ -51,10 +49,10 @@ class JSPsychSingleStim(JSPsychPlugin):
 
     stimulus = HTMLField()
     is_html = models.BooleanField(default=True)
-    choices = ArrayField(models.CharField(max_length=5), blank=True)
+    choices = models.CharField(max_length=5, blank=True)
     prompt = HTMLField(blank=True, null=True)
-    timing_stim = models.IntegerField(default=-1, blank=True, null=True)
-    timing_response = models.IntegerField(default=-1, blank=True, null=True)
+    timing_stim = models.IntegerField(default=-1)
+    timing_response = models.IntegerField(default=-1)
     response_ends_trial = models.BooleanField(default=True)
 
     @property

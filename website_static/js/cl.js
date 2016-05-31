@@ -306,9 +306,10 @@ Array.prototype.flatten = function() {
 function ajax_call(url, parameters) {
   return {
     type: 'GET',
-    url: url,
+    dataType: 'json',
+    url: url + "/",
     data: parameters,
-    success: function(data) { console.log('ajax loaded succesfully...'); }
+    success: function(data) {  }
   };
 }
 
@@ -362,4 +363,17 @@ function check_form(elem) {
     return false;
   participant_data.push($('#participant-form').serializeArray());
   return true;
+}
+
+function getQuestions(q) {
+  var mykeys = Object.keys(q);
+  var ans = {};
+  for (i=0; i<mykeys.length; i++) {
+    if (mykeys[i] === 'message' || mykeys[i] === 'code')
+      continue;
+    ans[mykeys[i]] = $.parseJSON(q[mykeys[i]]);
+    if (ans[mykeys[i]].type === 'html')
+      ans[mykeys[i]].check_fn = window[ans[mykeys[i]].check_fn];
+  }
+  return ans;
 }

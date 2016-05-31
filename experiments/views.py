@@ -1,5 +1,6 @@
 import random
 import json
+import cPickle as pkl
 
 from django.views.generic import TemplateView
 from django.http import HttpResponse
@@ -8,9 +9,18 @@ from experiment_code.contextual_learning import (CommunityNetwork,
 from jspsych.models import JSPsychText, JSPsychSingleStim, JSPsychHTML
 
 
+def response_dict(code, message, **kwargs):
+    kwargs['message'] = message
+    kwargs['code'] = code
+    with open('data', 'w') as fout:
+        json.dump(kwargs, fout)
+    return HttpResponse(json.dumps(kwargs), content_type='application/json')
+
+
 def getStimuli(k, l, n):
-    with open('experiments/experiment_code/contextual_learning/words.txt') as fin:
-        words = fin.read().strip().split()
+    # with open('/home/da352/website/experiments/experiment_code/contextual_learning/words.txt') as fin:
+    #     words = fin.read().strip().split()
+    words = "moke thite jiv pif dex wug feeb bim lup zabe vap chuv".split()
     random.shuffle(words)
     cn = CommunityNetwork(k, l)
     sg = StreamGenerator(cn.transition_matrix)
@@ -29,20 +39,7 @@ class MainExperiment(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(MainExperiment, self).get_context_data(*args, **kwargs)
-        context['consent1'] = JSPsychText.objects.get(pk=1)
-        context['instructions'] = JSPsychText.objects.get(pk=2)
-        context['cross'] = JSPsychSingleStim.objects.get(name='cross')
-        context['new_task'] = JSPsychSingleStim.objects.get(name='new_task')
-        context['concentration_warning'] = JSPsychSingleStim.objects.get(
-            name='concentration_warning')
-        # context['words'] = json.dumps(getStimuli())
         return context
-
-
-def response_dict(code, message, **kwargs):
-    kwargs['message'] = message
-    kwargs['code'] = code
-    return HttpResponse(json.dumps(kwargs), content_type='application/json')
 
 
 def get_data(request):
@@ -98,8 +95,14 @@ def get_parameters(request):
 
 
 def save_data(request):
-    import ipdb; ipdb.set_trace()
-    return HttpResponse(json.dumps({}), content_type='application/json')
+    if request.POST:
+        experiment = request.POST.get('table', '')
+        data = request.POST.get('json', '')
+        opt_data = request.POST.get('opt_data', '')
+        with open('/home/da352/data', 'wb') as fout:
+            pkl.dump([experiment, data, opt_data], fout, -1)
+    return HttpResponse(json.dumps({'code': 200, 'message': 'success'}),
+                        content_type='application/json')
 
 
 class GetForm(TemplateView):

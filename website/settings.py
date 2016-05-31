@@ -33,13 +33,17 @@ ALLOWED_HOSTS = ['da352.user.srcf.net']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'polymorphic',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'experiments',
+    'eav',
     'jspsych',
-    'tinymce'
+    'tinymce',
+    'compressor',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -72,7 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'website.wsgi.application'
-
+ADMIN_SITE_HEADER = "Dimitris Alikaniotis Website"
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -87,8 +91,8 @@ WSGI_APPLICATION = 'website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'da',
-        'USER': 'da',
+        'NAME': 'da352',
+        'USER': 'da352',
         'PASSWORD': 'alis1212',
         'HOST': 'localhost',
         'PORT': '',
@@ -128,17 +132,24 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/experiments/static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = '/home/da/Projects/website/website_static/'
+STATIC_ROOT = '/home/da352/website_static/'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
 
 
 TINYMCE_DEFAULT_CONFIG = {
@@ -151,3 +162,5 @@ TINYMCE_DEFAULT_CONFIG = {
     "height": "300px",
 }
 # TINYMCE_COMPRESSOR = True
+# COMPRESS_ENABLED = True
+# COMPRESS_OFFLINE = True

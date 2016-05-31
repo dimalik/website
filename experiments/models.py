@@ -1,11 +1,18 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+import eav
+# from eav.models import Attribute
+from jspsych.models import JSPsychPlugin
 
 class Experiment(models.Model):
     name = models.CharField(max_length=255)
+    questions = models.ManyToManyField(JSPsychPlugin)
 
+    def __unicode__(self):
+        return self.name
+
+eav.register(Experiment)
 
 class ContextualLearning(models.Model):
     subject = models.CharField(max_length=255)
