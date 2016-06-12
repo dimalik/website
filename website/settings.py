@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'django.contrib.flatpages',
+    # 'sortedm2m',
+    'publications',
     'experiments',
     'eav',
     'jspsych',
@@ -55,6 +58,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 ROOT_URLCONF = 'website.urls'
@@ -91,9 +95,9 @@ ADMIN_SITE_HEADER = "Dimitris Alikaniotis Website"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'da352',
-        'USER': 'da352',
-        'PASSWORD': 'alis1212',
+        'NAME': 'django',
+        'USER': 'djangouser',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
     }
