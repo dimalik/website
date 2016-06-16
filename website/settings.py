@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0b2zdq0+@_e%gbd)4t2kc+vqzj09za@-+v7ape+t0%u&wz!une'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['da352.user.srcf.net']
+ALLOWED_HOSTS = ['da352.user.srcf.net', 'dimitriosalikaniotis.co.uk']
 
 
 # Application definition
@@ -95,8 +95,8 @@ ADMIN_SITE_HEADER = "Dimitris Alikaniotis Website"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django',
-        'USER': 'djangouser',
+        'NAME': 'da352',
+        'USER': 'da352',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',

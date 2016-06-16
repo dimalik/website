@@ -10,13 +10,14 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="1GcUyhzDbuL4TOlQUrkjaM6ZRdqMjgB_zlOXvMLd4Dw" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="PhD in the Department of Theoretical and Applied Linguistics at the University of Cambridge. Studies how people use statistical regularities in their environment when learning languages.">
     <meta name="author" content="Dimitrios Alikaniotis">
 
 
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Abril+Fatface">
-
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Josefin+Slab">
     <title>Dimitrios Alikaniotis</title>
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
     <link href="{% static "css/simple-sidebar.css" %}" rel="stylesheet">
@@ -30,21 +31,25 @@
 
     <style>
 
-     /* .header-style {
-        background-color: #b4b4b4;
-        border-radius: 5px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        text-align: center;
-        }
-      */
+     .header-style {
+       background-color: #282F44;
+       border-radius: 5px;
+       padding-top: 5px;
+       padding-bottom: 5px;
+       text-align: center;
+       font-family: 'Josefin Slab', serif;
+       font-weight: bold;
+       /* text-transform: uppercase; */
+     }
+     
      .name {
        font-family: 'Abril Fatface', serif;
+       color: #232A3F;
      }
 
      .contact-icons {
        text-align: center;
-       border: 1px solid white;
+       border: 1px solid #f3f3f3;
        width: auto;
        margin: 20px;
        border-radius: 15px;
@@ -56,17 +61,21 @@
      }
 
      .contact-icons-elements-hover {
-       background-color: white;
+       background-color: #f3f3f3;
      }
 
-     /* img {
-        -moz-transform: scaleX(-1);
-        -o-transform: scaleX(-1);
-        -webkit-transform: scaleX(-1);
-        transform: scaleX(-1);
-        filter: FlipH;
-        -ms-filter: "FlipH";
-        } */
+     h4 {
+       font-size: 20px;
+     }
+
+     img {
+       -moz-transform: scaleX(-1);
+       -o-transform: scaleX(-1);
+       -webkit-transform: scaleX(-1);
+       transform: scaleX(-1);
+       filter: FlipH;
+       -ms-filter: "FlipH";
+     }
 
     </style>
 
@@ -157,6 +166,17 @@
          $(this).removeClass('contact-icons-elements-hover');
        });
      });
+    </script>
+
+    <script>
+     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+     ga('create', 'UA-78228750-1', 'auto');
+     ga('send', 'pageview');
+
     </script>
   </body>
 </html>

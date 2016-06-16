@@ -3,10 +3,6 @@
 # remove all migrations
 find . -path "*/migrations/*.py*" -exec rm {} \;
 
-# reset db
-psql -c "DROP DATABASE django"
-psql -c "CREATE DATABASE django"
-psql -c "GRANT ALL PRIVILEGES ON DATABASE django to djangouser"
 
 ./manage.py makemigrations jspsych
 ./manage.py makemigrations experiments
