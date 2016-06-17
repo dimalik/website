@@ -35,92 +35,79 @@
   <script>
    var experiment = 'contextual_learning';
    var participant_data = [];
-   // fetch the data from the server
-   var task1 = $.ajax(ajax_call('{% url 'get_data' %}', {experiment: experiment, task: 'task1'}));
-   var task3 = $.ajax(ajax_call('{% url 'get_data' %}', {experiment: experiment, task: 'task3'}));
-   var parameters = $.ajax(ajax_call('{% url 'get_parameters' %}', {experiment: experiment}));
-   var questions = $.ajax(ajax_call('{% url 'get_questions' %}',
-				    {
-					'text'       : ['consent1', 'instructions', 'task2_instructions'],
-					'single-stim': ['cross', 'concentration_warning'],
-					'html'       : ['check_consent', 'bio_info']
-				    }));
 
-
+   var p = JSON.parse('{{ parameters|safe }}');
+   var q = JSON.parse('{{ questions|safe }}');
+   var d = JSON.parse('{{ data }}');
    $(document).ready(function() {
      $('#target').hide();  // preload bar fix
-     $.when(task1, task3, parameters, questions).done(function(task1, task3, parameters, questions) {
 
-       // <-- setup the experiment
-         parameters = parameters[0];
-         mappings = task1[0].mappings;
-       
-       [task1_stimuli, task2_stimuli] = fixTasks12(task1[0].stimuli, 20, 10);
-       task1 = task_factory('task1', task1_stimuli, parameters);
-       task2 = task_factory('task2', task2_stimuli, parameters);
-         q = getQuestions(questions[0]);
-       // task3 = task_factory('task3', task3[0].stimuli, parameters);
-       // -->
+     mappings = task1[0].mappings;
+     
+     [task1_stimuli, task2_stimuli] = fixTasks12(task1[0].stimuli, 20, 10);
+     task1 = task_factory('task1', task1_stimuli, parameters);
+     task2 = task_factory('task2', task2_stimuli, parameters);
 
-       getWord("#word", task1_stimuli, 0);
+     // task3 = task_factory('task3', task3[0].stimuli, parameters);
+     // -->
 
-       $(document).keypress(function(e) {
-         if ($('#italics').is(':visible'))
-           if (e.which === 105) {
-             $('#italics').html("<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>");
-           }
-       });
+     getWord("#word", task1_stimuli, 0);
 
-         
-       q.instructions['cont_key'] = [' '];
-       q.instructions['on_finish'] = function() { fixCentre($('#target')); }
-       q.cross['on_finish'] = function() { fixCentre($('#target')); }
-       q.task2_instructions['on_finish'] = function() { fixCentre($('#target')); }
-
-
-       // timeline.push(check_consent);
-       timeline = [q.consent1,
-                   q.check_consent,
-                   q.bio_info,
-                   q.concentration_warning,
-                   q.instructions,
-                   // q.cross,
-                   task1.getTimeline(),
-                   /* q.task2_instructions,
-                      q.cross,
-                      task2.getTimeline() */];
-       timeline.flatten();
-
-       // <-- initialize jsPsych
-       jsPsych.init({
-         timeline: timeline,
-         default_iti: 0,
-         display_element: $('#target'),
-         on_finish: function() {
-           save_data(experiment,
-                     "{% url 'save_data' %}",
-                     "{{ csrf_token }}",
-                     jsPsych.data.dataAsJSON(),
-                     {
-                       mappings: mappings
-                     });
+     $(document).keypress(function(e) {
+       if ($('#italics').is(':visible'))
+         if (e.which === 105) {
+           $('#italics').html("<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>");
          }
-       });
-       // -->
-       // <-- preload bar fix
-       $('body').attrchange({
-         trackValues: true,
-         callback: function(e)
-         {
-           if ( e.newValue.trim() === 'pace-done')
-             $('#target').show();
-         }
-       });
+     });
 
+     
+     q.instructions['cont_key'] = [' '];
+     q.instructions['on_finish'] = function() { fixCentre($('#target')); }
+     q.cross['on_finish'] = function() { fixCentre($('#target')); }
+     q.task2_instructions['on_finish'] = function() { fixCentre($('#target')); }
+
+
+     // timeline.push(check_consent);
+     timeline = [q.consent1,
+                 q.check_consent,
+                 q.bio_info,
+                 q.concentration_warning,
+                 q.instructions,
+                 // q.cross,
+                 task1.getTimeline(),
+                 /* q.task2_instructions,
+                    q.cross,
+                    task2.getTimeline() */];
+     timeline.flatten();
+
+     // <-- initialize jsPsych
+     jsPsych.init({
+       timeline: timeline,
+       default_iti: 0,
+       display_element: $('#target'),
+       on_finish: function() {
+         save_data(experiment,
+                   "{% url 'save_data' %}",
+                   "{{ csrf_token }}",
+                   jsPsych.data.dataAsJSON(),
+                   {
+                     mappings: mappings
+                   });
+       }
      });
      // -->
-   });
+     // <-- preload bar fix
+     $('body').attrchange({
+       trackValues: true,
+       callback: function(e)
+       {
+         if ( e.newValue.trim() === 'pace-done')
+           $('#target').show();
+       }
+     });
 
+   });
+   // -->
 
   </script>
 

@@ -18,21 +18,22 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from website.views import Home
-from experiments.views import MainExperiment, GetForm
+from experiments.helper_views import GetForm
 
 admin.site.site_header = settings.ADMIN_SITE_HEADER
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', Home.as_view(), name='home'),
-    url(r'^contextual_learning/$', MainExperiment.as_view(), name='home'),
-    url(r'^get_data/$', 'experiments.views.get_data', name='get_data'),
-    url(r'^get_parameters/$', 'experiments.views.get_parameters',
-        name='get_parameters'),
-    url(r'^get_questions/$', 'experiments.views.get_questions',
-        name='get_questions'),
+    url(r'^experiments/', include('experiments.urls')),
+    # url(r'^get_data/$', 'experiments.views.get_data', name='get_data'),
+    # url(r'^get_parameters/$', 'experiments.views.get_parameters',
+    #     name='get_parameters'),
+    # url(r'^get_questions/$', 'experiments.views.get_questions',
+    #     name='get_questions'),
     url(r'^get_form/(?P<form_name>\w+)$', GetForm.as_view(), name='get_form'),
-    url(r'^save_data/$', 'experiments.views.save_data', name='save_data'),
+    url(r'^save_data/$', 'experiments.helper_views.save_data',
+        name='save_data'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve',

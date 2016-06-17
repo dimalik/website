@@ -1,6 +1,8 @@
 from django.conf.urls import url
-from website.views import Home
+
+from experiments.views import ContextualLearningExperiment
 
 urlpatterns = [
-    url(r'^skatoules/$', Home.as_view(), name='hometest'),
+    url(r'^contextual_learning/$', ContextualLearningExperiment.as_view(),
+        name='hometest'),
 ]

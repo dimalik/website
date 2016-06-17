@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 import json
 
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from django.core.urlresolvers import reverse
 
 from tinymce.models import HTMLField
@@ -28,11 +27,19 @@ for the html.",
         return self.name
 
     def to_json(self):
-        d = {x: getattr(self, x)
-             for x in self._meta.get_all_field_names()
-             if getattr(self, x) and x != 'id'}
+        ni = 'jspsychplugin_ptr_id polymorphic_ctype_id id name'.split()
+        d = {}
+        for x in self._meta.get_all_field_names():
+            if x in ni:
+                continue
+            try:
+                json.dumps(getattr(self, x))
+            except (AttributeError, TypeError):
+                continue
+            if getattr(self, x):
+                d[x] = getattr(self, x)
         d['type'] = self.type
-        return json.dumps(d)
+        return d
 
 
 class JSPsychText(JSPsychPlugin):
