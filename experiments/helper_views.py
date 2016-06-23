@@ -37,9 +37,11 @@ class ExperimentView(TemplateView):
             elif param.parameter_type == 'ARR':
                 ans[param.name] = json.loads(
                     '[' + param.value.replace("'", '"') + ']')
+            elif param.parameter_type == 'FLO':
+                ans[param.name] = float(param.value)
             else:
                 ans[param.name] = param.value
-        return json.dumps(ans)
+        return ans
 
     @staticmethod
     def parse_questions(questions):
@@ -53,7 +55,7 @@ class ExperimentView(TemplateView):
             experiment.parameters.all()))
         context['questions'] = json.dumps(self.parse_questions(
             experiment.questions.all()))
-        context['data'] = self._get_data()
+        context['data'] = json.dumps(self._get_data())
         return context
 
     def get_template_names(self):

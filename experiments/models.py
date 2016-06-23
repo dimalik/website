@@ -5,8 +5,9 @@ from django.db import models
 
 PARAMETER_TYPES = (
     ('INT', 'Integer'),
+    ('FLO', 'Float'),
     ('STR', 'String'),
-    ('ARR', 'Array')
+    ('ARR', 'Array'),
 )
 
 

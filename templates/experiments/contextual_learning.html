@@ -24,7 +24,11 @@
     <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "css/bootstrap-theme.min.css" %}">
     {% endcompress %}
-
+    {% compress css inline %}
+    <style>
+     body { font-size: 20px; }
+    </style>
+    {% endcompress %}
 
     
   </head>
@@ -38,43 +42,57 @@
 
    var p = JSON.parse('{{ parameters|safe }}');
    var q = JSON.parse('{{ questions|safe }}');
-   var d = JSON.parse('{{ data }}');
+
+   missed = 0;
+
+   var checkMissing = {
+     timeline: [too_late_message],
+     conditional_function: function() {
+       var data = jsPsych.data.getLastTrialData();
+       if (p.keycodes.indexOf(data.key_press) >= 0) {
+         return false;
+       } else {
+         missed++;
+         if (missed >= p.missing_to_stop)
+           jsPsych.endExperiment('<p>We are sorry but it seems that you have missed a lot of trials</p>' +
+                                 '<p>and the experiment can\'t go on and you will not be paid.</p>' +
+                                 '<p>you can now close this window</p>');
+         return true;
+       }
+     }
+   };
+
+   
    $(document).ready(function() {
      $('#target').hide();  // preload bar fix
-
-     mappings = task1[0].mappings;
      
-     [task1_stimuli, task2_stimuli] = fixTasks12(task1[0].stimuli, 20, 10);
-     task1 = task_factory('task1', task1_stimuli, parameters);
-     task2 = task_factory('task2', task2_stimuli, parameters);
+     var d = fixEnvironment(JSON.parse('{{ data|safe }}'), window);
 
-     // task3 = task_factory('task3', task3[0].stimuli, parameters);
-     // -->
-
-     getWord("#word", task1_stimuli, 0);
-
-     $(document).keypress(function(e) {
-       if ($('#italics').is(':visible'))
-         if (e.which === 105) {
-           $('#italics').html("<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>");
-         }
-     });
 
      
-     q.instructions['cont_key'] = [' '];
-     q.instructions['on_finish'] = function() { fixCentre($('#target')); }
-     q.cross['on_finish'] = function() { fixCentre($('#target')); }
-     q.task2_instructions['on_finish'] = function() { fixCentre($('#target')); }
+        $(document).keypress(function(e) {
+          if ($('#italics').is(':visible'))
+            if (e.which === 105) {
+              $('#italics').html("<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>");
+            }
+        });
+     
+     
+     /* q.instructions['cont_key'] = [' '];
+        q.instructions['on_finish'] = function() { fixCentre($('#target')); }
+        q.cross['on_finish'] = function() { fixCentre($('#target')); }
+        q.task2_instructions['on_finish'] = function() { fixCentre($('#target')); } */
 
 
      // timeline.push(check_consent);
-     timeline = [q.consent1,
-                 q.check_consent,
-                 q.bio_info,
-                 q.concentration_warning,
-                 q.instructions,
+     timeline = [d
+       /* q.consent1,
+                    q.check_consent,
+                    q.bio_info,
+                    q.concentration_warning,
+                    q.instructions, */
                  // q.cross,
-                 task1.getTimeline(),
+                 //task1.getTimeline(),
                  /* q.task2_instructions,
                     q.cross,
                     task2.getTimeline() */];
@@ -91,7 +109,7 @@
                    "{{ csrf_token }}",
                    jsPsych.data.dataAsJSON(),
                    {
-                     mappings: mappings
+                     // mappings: mappings
                    });
        }
      });
@@ -103,6 +121,7 @@
        {
          if ( e.newValue.trim() === 'pace-done')
            $('#target').show();
+         fixCentre($('#target'));
        }
      });
 

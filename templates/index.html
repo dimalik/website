@@ -31,6 +31,10 @@
 
     <style>
 
+     .highlight {
+         font-weight: bold;
+     }
+
      .header-style {
        background-color: #282F44;
        border-radius: 5px;
@@ -138,7 +142,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-8" id="publications">
               <h4 class="header-style">Publications</h4>
               {% for year, publications in years %}
 	      <div{% if not forloop.last %} style="margin-bottom: 30px;"{% endif %}>
@@ -155,6 +159,7 @@
       </div>
     </div>
     <script src="{% static "js/jquery.js" %}"></script>
+    <script src="{% static "js/jquery.highlight.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
     <script>
      $(document).ready(function () {
@@ -165,6 +170,7 @@
          $(this).find('i').addClass('fa-inverse');
          $(this).removeClass('contact-icons-elements-hover');
        });
+	 $('#publications').highlight('D. Alikaniotis');
      });
     </script>
 

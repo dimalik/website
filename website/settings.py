@@ -83,23 +83,23 @@ ADMIN_SITE_HEADER = "Dimitris Alikaniotis Website"
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'da352',
-#         'USER': 'da352',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',
-#         'PORT': '',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'da352',
+        'USER': 'da352',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
 
 # Password validation
@@ -144,7 +144,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "website_static")
+STATIC_ROOT = "/home/da352/website_static"
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -163,6 +163,6 @@ TINYMCE_DEFAULT_CONFIG = {
     "width": "80%",
     "height": "300px",
 }
-# TINYMCE_COMPRESSOR = True
-# COMPRESS_ENABLED = True
+TINYMCE_COMPRESSOR = True
+COMPRESS_ENABLED = True
 # COMPRESS_OFFLINE = True

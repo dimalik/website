@@ -306,10 +306,9 @@ Array.prototype.flatten = function() {
 function ajax_call(url, parameters) {
   return {
     type: 'GET',
-    dataType: 'json',
-    url: url + "/",
+    url: url,
     data: parameters,
-    success: function(data) {  }
+    success: function(data) { console.log('ajax loaded succesfully...'); }
   };
 }
 
@@ -342,6 +341,7 @@ function fixTasks12(stimuli, task1_size, task2_size) {
 
 function save_data(experiment_name, save_path, middleware_token, data, opt_data){
   var data_table = experiment_name;
+  console.log(opt_data);
   $.ajax({
     type: 'post',
     cache: false,
@@ -365,6 +365,9 @@ function check_form(elem) {
   return true;
 }
 
+
+
+
 function getQuestions(q) {
   var mykeys = Object.keys(q);
   var ans = {};
@@ -376,4 +379,9 @@ function getQuestions(q) {
       ans[mykeys[i]].check_fn = window[ans[mykeys[i]].check_fn];
   }
   return ans;
+}
+
+function getWord(target, wordlist, word) {
+  $(target).html(wordlist[word]);
+  setTimeout(function() {getWord(target, wordlist, ++word);}, 1500);
 }

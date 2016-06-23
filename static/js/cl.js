@@ -34,11 +34,17 @@ function Task1(stream, parameters) {
     throw new Error('Stream was not a list of words');
   var that = this;
   if (parameters === undefined) parameters = {};
-  this.italics_probability = (parameters.italics_probability === undefined) ? 1/25: parameters.italics_probability;
+  this.probability = (parameters.probability === undefined) ? 1/25: parameters.probability;
   this.missing_top_stop = (parameters.missing_to_stop === undefined) ? 8: parameters.missing_to_stop;
   this.timing_attention = (parameters.timing_attention === undefined) ? 3000: parameters.timing_attention;
   this.timing_default = (parameters.timing_default === undefined) ? 1500: parameters.timing_default;
   this.attention_key = (parameters.attention_key === undefined) ? 'i': parameters.attention_key;
+  this.keys = (parameters.keys === undefined) ? ['z', 'm']: parameters.keys;
+
+  this.keycodes = [];
+
+  for (i=0; i<this.keys.length; i++)
+    this.keycodes.push(jsPsych.pluginAPI.convertKeyCharacterToKeyCode(this.keys[i]));
 
   var missed = 0;
 
@@ -56,10 +62,7 @@ function Task1(stream, parameters) {
     choices: [' '],
     timing_response: -1,
     response_ends_trial: true,
-    stimulus: '<p>Oops... it seems that you missed to indicate whether the text was in italics.</p>' +
-      '<p>Remember that if you have 8 (eight) misses then the experiment will automatically close</p>' +
-      '<p>and you won\'t be able to get paid</p><p>You can indicate whether the word was in italics</p>' +
-      '<p>by pressing the \'i\' key</p>' + 
+    stimulus: '<p>Oops... it seems that you missed to indicate whether the word was pleasant or not.</p>' +
       '<p>Press space to continue</p>'
   };
 
@@ -71,7 +74,7 @@ function Task1(stream, parameters) {
     timeline: [that.getTooLateMessage()],
     conditional_function: function() {
       var data = jsPsych.data.getLastTrialData();
-      if (data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(that.attention_key)) {
+      if (that.keycodes.indexOf(data.key_press) >= 0) {
         return false;
       } else {
         that.incMissed();
@@ -92,12 +95,13 @@ function Task1(stream, parameters) {
 Task1.prototype = Object.create(Task.prototype);
 Task1.prototype.constructor = Task1;
 
-Task1.prototype.get_with_critical = function(word) {
+Task1.prototype.criticalFunction = function(word) {
+  this.get_default_single_stim(word);
   dict = this.get_default_single_stim(word);
-  dict.choices = [this.attention_key];
+  dict.choices = this.keys;
   dict.timing_response = this.timing_attention;
   dict.response_ends_trial = true;
-  dict.stimulus = '<i>' + word + '</i>';
+  dict.stimulus = word + '<br/><br/><p style="color: blue;"> Is this word pleasant or not? <br/> \'z\' for unpleasant \'m\' for pleasant </p>';
   return dict;
 };
 
@@ -115,10 +119,10 @@ Task1.prototype.get_default_single_stim = function(word) {
 Task1.prototype.getTimeline = function() {
   timeline = [];
   for (i=0; i<this.stream.length; i++) {
-    if (Math.random() > this.italics_probability)
+    if (Math.random() > this.probability)
       timeline.push(this.get_default_single_stim(this.stream[i]));
     else {
-      timeline.push(this.get_with_critical(this.stream[i]));
+      timeline.push(this.criticalFunction(this.stream[i]));
       timeline.push(this.getCheckMissing());
     }
   }
@@ -384,4 +388,23 @@ function getQuestions(q) {
 function getWord(target, wordlist, word) {
   $(target).html(wordlist[word]);
   setTimeout(function() {getWord(target, wordlist, ++word);}, 1500);
+}
+
+
+var too_late_message = {
+  type: 'single-stim',
+  is_html: true,
+  choices: [' '],
+  timing_response: -1,
+  response_ends_trial: true,
+  stimulus: '<p>Oops... it seems that you missed to indicate whether the word was pleasant or not.</p>' +
+    '<p>Press space to continue</p>'
+};
+
+
+function fixEnvironment(d, w) {
+  for (i=0; i<d.length; i++)
+    if (typeof(d[i]) === 'string')
+      d[i] = w[d[i]];
+  return d;
 }
