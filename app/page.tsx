@@ -1,12 +1,7 @@
-import { getLatestItems } from "@/lib/mdx";
-import { PostListItem } from "@/components/post-list-item";
-
 export default function Home() {
-  const latest = getLatestItems(3);
-
   return (
     <div>
-      <section className="mb-16">
+      <section>
         <h1 className="font-serif text-3xl font-semibold mb-6">
           Dimitris Alikaniotis
         </h1>
@@ -36,21 +31,6 @@ export default function Home() {
           <a href="https://www.linkedin.com/in/dimitriosalikaniotis/" className="text-accent dark:text-accent-dark hover:underline" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </section>
-
-      {latest.length > 0 && (
-        <section>
-          <h2 className="font-serif text-xl font-semibold mb-4">Latest</h2>
-          <ul className="divide-y divide-gray-200 dark:divide-gray-800">
-            {latest.map((item) => (
-              <PostListItem
-                key={item.slug}
-                item={item}
-                href={item.type === "post" ? `/writing/${item.slug}` : `/projects/${item.slug}`}
-              />
-            ))}
-          </ul>
-        </section>
-      )}
     </div>
   );
 }
