@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+body {
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  background-color: #fafafa;
+  color: #1a1a1a;
+}
+
+.dark body {
+  background-color: #141414;
+  color: #e5e5e5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Crimson Pro", Georgia, serif;
+}
+
+/* View Transitions (progressive enhancement) */
+@view-transition {
+  navigation: auto;
+}
