@@ -32,7 +32,8 @@ export default function Home() {
         </div>
         <div className="mt-6 flex gap-6 text-sm">
           <a href="https://github.com/dimalik" className="text-accent dark:text-accent-dark hover:underline" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://scholar.google.com/citations?user=PLACEHOLDER" className="text-accent dark:text-accent-dark hover:underline" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+          <a href="https://scholar.google.com/citations?user=8ZsPobcAAAAJ&hl=en&oi=ao" className="text-accent dark:text-accent-dark hover:underline" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/dimitriosalikaniotis/" className="text-accent dark:text-accent-dark hover:underline" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </section>
 
