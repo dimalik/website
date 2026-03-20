@@ -23,7 +23,7 @@ export interface Publication {
   authors: string[];
   venue: string;
   year: number;
-  category: "peer-reviewed" | "other";
+  category: "peer-reviewed" | "other" | "patent";
   links: {
     pdf?: string;
     code?: string;

@@ -54,6 +54,7 @@ export function PublicationsClient({
   });
 
   const peerReviewed = filtered.filter((p) => p.category === "peer-reviewed");
+  const patents = filtered.filter((p) => p.category === "patent");
   const other = filtered.filter((p) => p.category === "other");
 
   return (
@@ -69,6 +70,12 @@ export function PublicationsClient({
         <div className="mb-12">
           <h2 className="font-serif text-xl font-semibold mb-4">Peer-Reviewed</h2>
           <YearGroupedList pubs={peerReviewed} />
+        </div>
+      )}
+      {patents.length > 0 && (
+        <div className="mb-12">
+          <h2 className="font-serif text-xl font-semibold mb-4">US Patents</h2>
+          <YearGroupedList pubs={patents} />
         </div>
       )}
       {other.length > 0 && (

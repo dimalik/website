@@ -1,11 +1,61 @@
 import { Publication } from "@/lib/types";
 
 export const publications: Publication[] = [
-  // Peer-reviewed
+  // ==================== Peer-Reviewed ====================
+
+  {
+    title: "Your Large Language Models Are Leaving Fingerprints",
+    authors: ["H. E. McGovern", "R. Stureborg", "Y. Suhara", "D. Alikaniotis"],
+    venue: "GenAIDetect Workshop",
+    year: 2025,
+    category: "peer-reviewed",
+    links: {},
+  },
+  {
+    title: "mEdIT: Multilingual Text Editing via Instruction Tuning",
+    authors: [
+      "V. Raheja",
+      "D. Alikaniotis",
+      "V. Kulkarni",
+      "B. Alhafni",
+      "D. Kumar",
+    ],
+    venue: "NAACL",
+    year: 2024,
+    category: "peer-reviewed",
+    links: {},
+  },
+  {
+    title: "Large Language Models Are Inconsistent and Biased Evaluators",
+    authors: ["R. Stureborg", "D. Alikaniotis", "Y. Suhara"],
+    venue: "arXiv",
+    year: 2024,
+    category: "peer-reviewed",
+    links: {
+      pdf: "https://arxiv.org/abs/2405.01724",
+    },
+  },
+  {
+    title:
+      "Characterizing the Confidence of Large Language Model-Based Automatic Evaluation Metrics",
+    authors: ["R. Stureborg", "D. Alikaniotis", "Y. Suhara"],
+    venue: "EACL",
+    year: 2024,
+    category: "peer-reviewed",
+    links: {},
+  },
+  {
+    title: "Source Identification in Abstractive Summarization",
+    authors: ["Y. Suhara", "D. Alikaniotis"],
+    venue: "EACL",
+    year: 2024,
+    category: "peer-reviewed",
+    links: {},
+  },
   {
     title: "Adversarial Grammatical Error Correction",
     authors: ["V. Raheja", "D. Alikaniotis"],
-    venue: "EMNLP",
+    venue: "Findings of EMNLP",
     year: 2020,
     category: "peer-reviewed",
     links: {},
@@ -24,7 +74,7 @@ export const publications: Publication[] = [
   {
     title:
       "The Entropy of Words — Learnability and Expressivity across More than 1000 Languages",
-    authors: ["C. Bentz", "D. Alikaniotis", "M. Cysouw", "R. Ferrer-Cancho"],
+    authors: ["C. Bentz", "D. Alikaniotis", "M. Cysouw", "R. Ferrer-i-Cancho"],
     venue: "Entropy 19(6)",
     year: 2017,
     category: "peer-reviewed",
@@ -46,16 +96,6 @@ export const publications: Publication[] = [
     },
   },
   {
-    title: "The Word Entropy of Natural Languages",
-    authors: ["C. Bentz", "D. Alikaniotis"],
-    venue: "arXiv",
-    year: 2016,
-    category: "peer-reviewed",
-    links: {
-      pdf: "https://arxiv.org/abs/1606.06996",
-    },
-  },
-  {
     title: "Automatic Text Scoring Using Neural Networks",
     authors: ["D. Alikaniotis", "H. Yannakoudakis", "M. Rei"],
     venue: "ACL",
@@ -64,6 +104,16 @@ export const publications: Publication[] = [
     links: {
       pdf: "https://aclanthology.info/papers/P16-1068/p16-1068",
       code: "https://github.com/dimalik/aes",
+    },
+  },
+  {
+    title: "The Word Entropy of Natural Languages",
+    authors: ["C. Bentz", "D. Alikaniotis"],
+    venue: "arXiv",
+    year: 2016,
+    category: "peer-reviewed",
+    links: {
+      pdf: "https://arxiv.org/abs/1606.06996",
     },
   },
   {
@@ -77,8 +127,7 @@ export const publications: Publication[] = [
     },
   },
   {
-    title:
-      "The Glottolog Data Explorer: Mapping the World's Languages",
+    title: "The Glottolog Data Explorer: Mapping the World's Languages",
     authors: [
       "A. P. Caines",
       "C. Bentz",
@@ -94,8 +143,7 @@ export const publications: Publication[] = [
     },
   },
   {
-    title:
-      "A Distributional Semantics Approach to Implicit Language Learning",
+    title: "A Distributional Semantics Approach to Implicit Language Learning",
     authors: ["D. Alikaniotis", "J. N. Williams"],
     venue: "NetWordS",
     year: 2015,
@@ -105,7 +153,84 @@ export const publications: Publication[] = [
     },
   },
 
-  // Other publications
+  // ==================== US Patents ====================
+
+  {
+    title: "Real-Time Tone Feedback in Video Conferencing",
+    authors: ["V. Raheja", "D. Alikaniotis"],
+    venue: "US Patent 12,526,167",
+    year: 2026,
+    category: "patent",
+    links: {},
+  },
+  {
+    title: "Detecting the Tone of Text",
+    authors: ["D. Alikaniotis", "S. Levental", "A. Shevchenko"],
+    venue: "US Patent App. 19/267,669",
+    year: 2025,
+    category: "patent",
+    links: {},
+  },
+  {
+    title:
+      "Automatic Code Generation from Informal Specifications of Text Editing and Grammar Correction Guidelines",
+    authors: ["D. Kumar", "V. Raheja", "V. Kulkarni", "D. Alikaniotis"],
+    venue: "US Patent App. 18/587,303",
+    year: 2025,
+    category: "patent",
+    links: {},
+  },
+  {
+    title: "Detecting the Tone of Text",
+    authors: ["D. Alikaniotis", "S. Levental", "A. Shevchenko"],
+    venue: "US Patent 12,380,275",
+    year: 2025,
+    category: "patent",
+    links: {},
+  },
+  {
+    title: "Conforming Digital Documents to Style Guides",
+    authors: ["V. Kulkarni", "C. Leacock", "D. Alikaniotis", "M. Gubin"],
+    venue: "US Patent App. 18/977,100",
+    year: 2025,
+    category: "patent",
+    links: {},
+  },
+  {
+    title: "Automatic Prediction of Important Content",
+    authors: ["R. Khlystik", "K. Singh", "D. Alikaniotis", "J. Vandamme"],
+    venue: "US Patent 12,164,860",
+    year: 2024,
+    category: "patent",
+    links: {},
+  },
+  {
+    title: "Real-Time Tone Feedback in Video Conferencing",
+    authors: ["V. Raheja", "D. Alikaniotis"],
+    venue: "US Patent 11,894,941",
+    year: 2024,
+    category: "patent",
+    links: {},
+  },
+  {
+    title: "Automatic Prediction of Important Content",
+    authors: ["R. Khlystik", "K. Singh", "D. Alikaniotis", "J. Vandamme"],
+    venue: "US Patent 11,853,687",
+    year: 2023,
+    category: "patent",
+    links: {},
+  },
+  {
+    title: "Detecting the Tone of Text",
+    authors: ["D. Alikaniotis", "S. Levental", "A. Shevchenko"],
+    venue: "US Patent 11,763,085",
+    year: 2023,
+    category: "patent",
+    links: {},
+  },
+
+  // ==================== Other Publications ====================
+
   {
     title:
       "Understanding Semantic Implicit Learning through Distributional Linguistic Patterns. A Computational Perspective",
@@ -116,8 +241,7 @@ export const publications: Publication[] = [
     links: {},
   },
   {
-    title:
-      "Linguistic Naturalness and Semi-artificial Language Learning",
+    title: "Linguistic Naturalness and Semi-artificial Language Learning",
     authors: [
       "J. N. Williams",
       "M. Sheehan",
@@ -150,7 +274,8 @@ export const publications: Publication[] = [
     title:
       "Predicting Semantic Constraints in Implicit Language Learning with Distributional Semantics",
     authors: ["D. Alikaniotis", "J. N. Williams"],
-    venue: "Interdisciplinary Advances in Statistical Learning, San Sebastian, Spain",
+    venue:
+      "Interdisciplinary Advances in Statistical Learning, San Sebastian, Spain",
     year: 2015,
     category: "other",
     links: {},
