@@ -9,7 +9,7 @@ export function PublicationEntry({ pub }: { pub: Publication }) {
       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
         {pub.authors.map((a, i) => (
           <span key={i}>
-            {a === "D. Alikaniotis" ? (
+            {a.includes("Alikaniotis") ? (
               <strong className="text-text-light dark:text-text-dark">{a}</strong>
             ) : (
               a
@@ -30,6 +30,9 @@ export function PublicationEntry({ pub }: { pub: Publication }) {
           )}
           {pub.links.bibtex && (
             <a href={pub.links.bibtex} className="text-accent dark:text-accent-dark hover:underline" target="_blank" rel="noopener noreferrer">[BibTeX]</a>
+          )}
+          {pub.links.interactive && (
+            <a href={pub.links.interactive} className="text-accent dark:text-accent-dark hover:underline" target="_blank" rel="noopener noreferrer">[Interactive]</a>
           )}
         </div>
       )}
