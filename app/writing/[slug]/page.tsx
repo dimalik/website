@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getPosts, getPostBySlug } from "@/lib/mdx";
+import { getAllPosts, getPostBySlug } from "@/lib/mdx";
 import { mdxComponents } from "@/components/mdx-components";
 
 export async function generateStaticParams() {
-  return getPosts().map((p) => ({ slug: p.slug }));
+  return getAllPosts().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -19,6 +19,7 @@ export async function generateMetadata({
   return {
     title: `${post.title} | Dimitris Alikaniotis`,
     description: post.description,
+    ...(post.draft && { robots: { index: false, follow: false } }),
     openGraph: {
       title: post.title,
       description: post.description,

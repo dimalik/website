@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getProjects, getProjectBySlug } from "@/lib/mdx";
+import { getAllProjects, getProjectBySlug } from "@/lib/mdx";
 import { mdxComponents } from "@/components/mdx-components";
 
 export async function generateStaticParams() {
-  return getProjects().map((p) => ({ slug: p.slug }));
+  return getAllProjects().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({

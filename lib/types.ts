@@ -6,6 +6,7 @@ export interface Post {
   description: string;
   tags: string[];
   image?: string;
+  draft: boolean;
   content: string;
 }
 
@@ -17,6 +18,7 @@ export interface Project {
   description: string;
   tags: string[];
   image?: string;
+  draft: boolean;
   content: string;
 }
 

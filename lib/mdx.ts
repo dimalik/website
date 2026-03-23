@@ -32,6 +32,7 @@ function getMdxFiles(dir: string) {
         description: data.description ?? "",
         tags: data.tags ?? [],
         image: data.image,
+        draft: data.draft === true,
         content,
       };
     })
@@ -39,19 +40,27 @@ function getMdxFiles(dir: string) {
 }
 
 export function getPosts() {
+  return getMdxFiles("posts").filter((p) => !p.draft);
+}
+
+export function getAllPosts() {
   return getMdxFiles("posts");
 }
 
 export function getProjects() {
+  return getMdxFiles("projects").filter((p) => !p.draft);
+}
+
+export function getAllProjects() {
   return getMdxFiles("projects");
 }
 
 export function getPostBySlug(slug: string) {
-  return getMdxFiles("posts").find((p) => p.slug === slug) ?? null;
+  return getAllPosts().find((p) => p.slug === slug) ?? null;
 }
 
 export function getProjectBySlug(slug: string) {
-  return getMdxFiles("projects").find((p) => p.slug === slug) ?? null;
+  return getAllProjects().find((p) => p.slug === slug) ?? null;
 }
 
 export function getLatestItems(count: number) {
