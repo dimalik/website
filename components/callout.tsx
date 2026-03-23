@@ -98,7 +98,7 @@ export function Blockquote({ children, ...props }: React.BlockquoteHTMLAttribute
     return (
       <div className={`border-l-4 ${style.border} ${style.bg} rounded-r-lg pl-4 pr-4 py-3 my-4`}>
         <p className={`font-semibold text-sm ${style.text} mb-1`}>{style.label}</p>
-        <div className="text-sm text-gray-700 dark:text-gray-300 [&>p]:m-0">{cleaned}</div>
+        <div className="text-sm text-gray-700 dark:text-gray-300 [&>p]:m-0 [&>p:empty]:hidden">{cleaned}</div>
       </div>
     );
   }
