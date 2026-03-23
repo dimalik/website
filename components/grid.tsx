@@ -1,11 +1,23 @@
+"use client";
+
 export function Grid({ cols = 3, children }: { cols?: number | string; children: React.ReactNode }) {
   const n = Number(cols) || 3;
   return (
     <div
-      className="not-prose grid gap-2 my-6 [&_p]:m-0 [&_p]:contents [&_img]:my-0"
-      style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }}
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${n}, 1fr)`,
+        gap: "0.5rem",
+        margin: "1.5rem 0",
+      }}
     >
-      {children}
+      <style>{`
+        .img-grid p { margin: 0; display: contents; }
+        .img-grid img { margin: 0; cursor: zoom-in; border-radius: 0.5rem; }
+      `}</style>
+      <div className="img-grid" style={{ display: "contents" }}>
+        {children}
+      </div>
     </div>
   );
 }
