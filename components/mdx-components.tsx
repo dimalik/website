@@ -1,10 +1,12 @@
 import type { MDXComponents } from "mdx/types";
 import { ImageLightbox } from "./image-lightbox";
 import { Blockquote } from "./callout";
-import { Grid } from "./grid";
+import { Grid2, Grid3, Grid4 } from "./grid";
 
 export const mdxComponents: MDXComponents = {
-  Grid,
+  Grid2,
+  Grid3,
+  Grid4,
   blockquote: (props) => <Blockquote {...props} />,
   h1: (props) => (
     <h1 className="font-serif text-3xl font-semibold mt-8 mb-4" {...props} />
