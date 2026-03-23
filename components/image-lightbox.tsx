@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 
 export function ImageLightbox(props: React.ImgHTMLAttributes<HTMLImageElement>) {
   const [open, setOpen] = useState(false);
@@ -20,19 +21,22 @@ export function ImageLightbox(props: React.ImgHTMLAttributes<HTMLImageElement>) 
           {caption}
         </span>
       )}
-      {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 cursor-zoom-out p-4"
-          onClick={() => setOpen(false)}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={props.src}
-            alt={props.alt ?? ""}
-            className="max-w-full max-h-full object-contain"
-          />
-        </div>
-      )}
+      {open &&
+        createPortal(
+          <span
+            role="dialog"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 cursor-zoom-out p-4"
+            onClick={() => setOpen(false)}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={props.src}
+              alt={props.alt ?? ""}
+              className="max-w-full max-h-full object-contain"
+            />
+          </span>,
+          document.body
+        )}
     </>
   );
 }
