@@ -7,18 +7,18 @@ export function ImageLightbox(props: React.ImgHTMLAttributes<HTMLImageElement>) 
   const caption = props.alt && props.alt !== "" && !props.alt.startsWith("img") ? props.alt : null;
 
   return (
-    <figure className="my-6">
+    <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        className="rounded-lg cursor-zoom-in"
+        className="rounded-lg my-6 cursor-zoom-in"
         alt={props.alt ?? ""}
         {...props}
         onClick={() => setOpen(true)}
       />
       {caption && (
-        <figcaption className="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <span className="block text-center text-sm text-gray-500 dark:text-gray-400 -mt-4 mb-6">
           {caption}
-        </figcaption>
+        </span>
       )}
       {open && (
         <div
@@ -33,6 +33,6 @@ export function ImageLightbox(props: React.ImgHTMLAttributes<HTMLImageElement>) 
           />
         </div>
       )}
-    </figure>
+    </>
   );
 }
