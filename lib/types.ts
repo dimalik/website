@@ -2,6 +2,7 @@ export interface Post {
   slug: string;
   title: string;
   date: string;
+  lastModified: string;
   description: string;
   tags: string[];
   image?: string;
@@ -12,6 +13,7 @@ export interface Project {
   slug: string;
   title: string;
   date: string;
+  lastModified: string;
   description: string;
   tags: string[];
   image?: string;

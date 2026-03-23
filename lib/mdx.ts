@@ -4,6 +4,15 @@ import matter from "gray-matter";
 
 const contentDir = path.join(process.cwd(), "content");
 
+function resolveDate(raw: string | undefined): string {
+  if (!raw) return "";
+  const str = String(raw).trim();
+  if (str.toLowerCase() === "@today") {
+    return new Date().toISOString().slice(0, 10);
+  }
+  return str;
+}
+
 function getMdxFiles(dir: string) {
   const fullPath = path.join(contentDir, dir);
   if (!fs.existsSync(fullPath)) return [];
@@ -13,11 +22,13 @@ function getMdxFiles(dir: string) {
     .map((filename) => {
       const filePath = path.join(fullPath, filename);
       const fileContent = fs.readFileSync(filePath, "utf-8");
+      const stat = fs.statSync(filePath);
       const { data, content } = matter(fileContent);
       return {
         slug: filename.replace(/\.mdx$/, ""),
         title: data.title ?? "",
-        date: data.date ?? "",
+        date: resolveDate(data.date),
+        lastModified: stat.mtime.toISOString().slice(0, 10),
         description: data.description ?? "",
         tags: data.tags ?? [],
         image: data.image,

@@ -39,13 +39,28 @@ export default async function PostPage({
   return (
     <article>
       <h1 className="font-serif text-3xl font-semibold mb-2">{post.title}</h1>
-      <time className="text-gray-500 dark:text-gray-400 text-sm">
-        {new Date(post.date).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </time>
+      <div className="text-gray-500 dark:text-gray-400 text-sm flex gap-3">
+        <time>
+          {new Date(post.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </time>
+        {post.lastModified !== post.date && (
+          <>
+            <span>·</span>
+            <span>
+              Updated{" "}
+              {new Date(post.lastModified).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+          </>
+        )}
+      </div>
       <div className="prose dark:prose-invert max-w-none mt-8">
         <MDXRemote source={post.content} components={mdxComponents} />
       </div>
