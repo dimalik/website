@@ -1,4 +1,5 @@
 import type { MDXComponents } from "mdx/types";
+import { ImageLightbox } from "./image-lightbox";
 
 export const mdxComponents: MDXComponents = {
   h1: (props) => (
@@ -24,8 +25,5 @@ export const mdxComponents: MDXComponents = {
   pre: (props) => (
     <pre className="font-mono text-sm bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto my-4" {...props} />
   ),
-  img: (props) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img className="rounded-lg my-6" alt={props.alt ?? ""} {...props} />
-  ),
+  img: (props) => <ImageLightbox {...props} />,
 };
