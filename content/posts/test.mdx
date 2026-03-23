@@ -1,0 +1,95 @@
+---
+title: "Building a Multi-agent research group (part 1)"
+date: "@today"
+description: "Building an AI-powered research assistant in a week"
+tags: ["agents"]
+draft: true
+---
+
+For a while, I was looking into a system to manage my reading. Conference papers, book chapters, blog posts, mildly interesting posts on LinkedIn seemed to take over most of my open tabs in my browser, phone, and tablet. So much so, I have a almost weekly ritual to just close these papers without even looking thinking that I won't miss them. Then, inevitably, I randomly remember I read something about a topic and, of course, the paper was closed and never to be found.
+
+Since grad school, I have been using a combination of [Papers](https://www.papersapp.com/), [Zotero](https://www.zotero.org/), and even created [my own at some point](https://github.com/dimalik/empos) since none of the ones at the time had an emacs plugin. Alas, my workflow has changed significantly since then since I hardly ever get to use emacs anymore. Also, sadly, the quality of some of the software itself has degraded in quality to not justify the price tag. A little while ago, I made the switch to [Paperpile](https://paperpile.com/) and really loved its browser extension, pdf reader, and iPad app. However, as things started looking up again I discovered I could never build a habit out of it. The UI was too clunky and I could never get it to sync to Overleaf, no matter how many times I tried. Very quickly instead of a reference management system it became a repository of unread papers, one a bit better than a simple text file filled with links.
+
+As a side note, this has nothing to do with Paperpile itself, which I highly recommend, but mostly with my own way of reading or consuming content online more generally.
+
+Second, more personal, aside; I recently came back from my parental leave. I took an extended leave spending time with my family back home in Greece, renovating a house we bought there a while back, and watching our little one grow up and learn about the world around him. As importantly, I made a very conscious choice to remove all work-related stuff from my phone, turn off my work laptop, and stop my compulsive need to check for papers.
+
+Naturally, though, when I came back to work, I felt very disconnected by what was going on. I started by reading papers in my newsletter and half-way through the **first** one I, embarassingly, realised I could not understand what it even was about. It seemed that five months had rendered me completely clueless about the stuff that I had been working on for years. This was a bad situation I was in; things progress so fast these days and a dread took over that I won't be able to catch up now.
+
+Luckily, the initial shock passed a little while later and I eventually managed to understand what I was reading (for what it's worth, [this](https://openreview.net/forum?id=4AmFA0qNQ2) was the paper that caused me to re-evaluate my career). I then imported the article to my Paperpile and I had another sudden glimpse of horror: about 120 papers I had saved before I left but never read. To make matters worse, 300+ messages and notifications on Slack (admittedly, irrelevant but contributed to my sense of dread). At the risk of sounding patronizing, this seemed like an opportunity. One upside of coming back was that I wasn't tied to a very specific project I needed to work on which gave me some time to explore. We live in an era where things are being built very quickly.
+
+## > _I want to build a reference management system_
+
+So I started building my own solution. I felt I knew enough to do this and the problem seemed easy enough, so I enlisted the help of my new friend Claude and together I thought we could do this. To be honest, I'm not 100% sure where this was going at first. There was a lot of back and forth on capabilities I wanted, on capabilities I thought I wanted, and capabilities I absolutely needed. I have to say I had a lot of fun working on this and if someone else finds it useful I would be very happy.
+
+![Arcana's dashboard showing papers in my library, recommended as well as the latest papers on topics I am interested in. My interests are automatically inferred from the contents of my library.](/images/arcana_1.png "Arcana dashboard")
+
+I understand that doing what I do for a living, I should probably be worried, but there’s a part of me that was impressed when I said “add a recommender system for similar papers” and the thing just works. Admittedly, it required a lot of tuning and still can benefit from some expert intervention, but for a PoC for a personal project was way better than I could do (or, admittedly, as I’m told, friends who’ve worked on recommender systems given the problem and the timeline).
+
+### How I read papers
+
+The first problem I was facing was a rather basic one: what exactly would I want to focus on when reading a paper. Claude came up with a number of suggestions most of which I did not like to be honest. What I wanted was to focus on things I would focus on anyway, have a way to verify to avoid hallucinations or bad parsing of tables, figures, or text. I settled in the end for three sections: (1) Review, with a summary, highlights, and the novely of the paper (the LLM added an assessment on its own which I kinda liked until I put my papers there), (2) Methodology, this part I was the most interested in, (3) Results, admittedly this is the weakest point. Not because there's something inherently difficult here, but because results in these papers are usually split of multiple sections, ablations, the tables need context etc. However, the highlight results are almost always there and correctly displayed. Admittedly, not the most creative way but still
+
+<Grid2>
+
+![The main summary screen](/images/summary.png)
+
+![Methoology and code](/images/methodology.png)
+
+![Paper results](/images/results.png)
+
+![Side-by-side view with the PDF](/images/with_pdf.png)
+
+</Grid2>
+
+<Caption>The main paper reading screen in Arcana. The overall summary, the methodology, the results, and the PDF viewer.</Caption>
+
+However, we live in the AI age now. I also wanted a way to be able to interact with the output, ask questions, have things explained, and even "store" some things I found interesting and useful; not merely do something I could've done by copy/pasting the link to the paper. For example, if I am not familiar with a technique or an acronym, have it quickly explained. If there is something not included or needs clarification have an immediate way of understanding it. If I want the system to expand on something I would be able to do so easily.
+
+So I came up with a simple set of "tools"; explain, chat, search, and add to notebook. Each of those would query the LLM, optionally taking some context, to help me understand something related to the paper. What took a lot more involved though, testing the limitations of Claude was to be able to also do this using the PDF too.
+
+<Grid3>
+
+![First](/images/explanation.png)
+
+![Third](/images/pdf_chat.png)
+
+![Second](/images/chat.png)
+
+</Grid3>
+
+### Making connections
+
+At this point, I had a core capability ready and to be honest I started getting up to speed very quickly with things I missed. A lot of things were still manual but I seemed to be able to build a habit around this way of reading.
+
+One thing that has always annoyed me when I come across a paper with 50+ references is that I see a reference I am interested in but cannot for the life of me figure out where exactly it was mentioned. So I built a fun little addition to the app that gets the extracted references, finds them in the text and then summarizes the context and why they are mentioned. This had a nice side-effect that when I saw some random paper in my list I don't really recognize I can try _why_ I added it in the first place.
+
+![alt text](/images/connections.png "Connections")
+
+### Analyze
+
+Now that I had a way to make connections between papers things started being more interesting. The first question I asked was "Maybe I can now also compare papers on their methodologies, claims, or results"
+
+Concepts
+
+Discovery
+
+### Making sense of the chaos
+
+research on categories and tags
+
+Insights
+
+Replication
+
+## Keeping costs down
+
+Obviously, something like this would increase my LLM costs
+
+1. Deferring to simpler/classical approaches wherever possible (
+2. Focus on re-usability
+### Batch processing
+
+The simplest way to slash costs by half would be to simply use a Batch endpoint (offered both by Anthropic and OpenAI). This obviously would not work on a "I want results here and now" situation, but, frankly, this is hardly ever the case. In this case, might as well read the paper itself instead of processing it. Usually, I'll spend some time looking for papers, or, as we saw before "Save them for later". In these cases, batch processing is easy. If you import a large number of papers in a short period of time, the system smartly activates the batch processing mode in which case you'd need to wait for a bit more time slashing costs by half. 
+
+_If you made it up to here, thank you for keeping up with my rambling. Stay tuned for Part II on how I added an agentic component to perform ML research (it's actually quite fun). You can try out the app [here](https://github.com/dimalik/arcana)._
