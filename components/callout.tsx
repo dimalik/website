@@ -1,4 +1,4 @@
-import { ReactNode, Children, isValidElement } from "react";
+import { ReactNode, Children, isValidElement, cloneElement, ReactElement } from "react";
 
 const CALLOUT_TYPES: Record<string, { label: string; border: string; bg: string; text: string }> = {
   NOTE: {
@@ -33,49 +33,82 @@ const CALLOUT_TYPES: Record<string, { label: string; border: string; bg: string;
   },
 };
 
-function extractCalloutType(children: ReactNode): { type: string; rest: ReactNode[] } | null {
-  const childArray = Children.toArray(children);
-  if (childArray.length === 0) return null;
+function getTextContent(node: ReactNode): string {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (!node) return "";
+  if (Array.isArray(node)) return node.map(getTextContent).join("");
+  if (isValidElement(node)) {
+    return getTextContent((node.props as { children?: ReactNode }).children);
+  }
+  return "";
+}
 
-  const first = childArray[0];
-  if (!isValidElement(first)) return null;
+function stripCalloutTag(node: ReactNode, tag: string): ReactNode {
+  const pattern = `[!${tag}]`;
 
-  const inner = (first.props as { children?: ReactNode })?.children;
-  const text = typeof inner === "string" ? inner : Children.toArray(inner).find((c) => typeof c === "string");
-  if (typeof text !== "string") return null;
+  if (typeof node === "string") {
+    const idx = node.indexOf(pattern);
+    if (idx !== -1) {
+      const after = node.slice(idx + pattern.length).replace(/^\n/, "").replace(/^\s/, "");
+      return after || null;
+    }
+    return node;
+  }
 
-  const match = text.match(/^\[!(\w+)\]\s*/);
-  if (!match) return null;
+  if (isValidElement(node)) {
+    const props = node.props as { children?: ReactNode };
+    const newChildren = stripCalloutTag(props.children, tag);
+    return cloneElement(node as ReactElement, {}, newChildren);
+  }
 
-  const type = match[1].toUpperCase();
-  if (!CALLOUT_TYPES[type]) return null;
+  if (Array.isArray(node)) {
+    let found = false;
+    const result = node.map((child) => {
+      if (found) return child;
+      const stripped = stripCalloutTag(child, tag);
+      if (stripped !== child) found = true;
+      return stripped;
+    }).filter(Boolean);
+    return result;
+  }
 
-  const remaining = text.slice(match[0].length);
-  const restOfFirst = remaining ? remaining : null;
-  const restChildren = childArray.slice(1);
+  const arr = Children.toArray(node);
+  if (arr.length === 0) return node;
 
-  return { type, rest: restOfFirst ? [restOfFirst, ...restChildren] : restChildren };
+  let found = false;
+  const result = arr.map((child) => {
+    if (found) return child;
+    const stripped = stripCalloutTag(child, tag);
+    if (stripped !== child) found = true;
+    return stripped;
+  }).filter(Boolean);
+  return result.length === 1 ? result[0] : result;
 }
 
 export function Blockquote({ children, ...props }: React.BlockquoteHTMLAttributes<HTMLQuoteElement>) {
-  const callout = extractCalloutType(children);
+  const text = getTextContent(children);
+  const match = text.match(/\[!(\w+)\]/);
 
-  if (!callout) {
+  if (match && CALLOUT_TYPES[match[1].toUpperCase()]) {
+    const type = match[1].toUpperCase();
+    const style = CALLOUT_TYPES[type];
+    const cleaned = stripCalloutTag(children, match[1]);
+
     return (
-      <blockquote
-        className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 my-4 text-gray-600 dark:text-gray-400 italic"
-        {...props}
-      >
-        {children}
-      </blockquote>
+      <div className={`border-l-4 ${style.border} ${style.bg} rounded-r-lg pl-4 pr-4 py-3 my-4`}>
+        <p className={`font-semibold text-sm ${style.text} mb-1`}>{style.label}</p>
+        <div className="text-sm text-gray-700 dark:text-gray-300 [&>p]:m-0">{cleaned}</div>
+      </div>
     );
   }
 
-  const style = CALLOUT_TYPES[callout.type];
   return (
-    <div className={`border-l-4 ${style.border} ${style.bg} rounded-r-lg pl-4 pr-4 py-3 my-4`}>
-      <p className={`font-semibold text-sm ${style.text} mb-1`}>{style.label}</p>
-      <div className="text-sm text-gray-700 dark:text-gray-300">{callout.rest}</div>
-    </div>
+    <blockquote
+      className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 my-4 text-gray-600 dark:text-gray-400 italic"
+      {...props}
+    >
+      {children}
+    </blockquote>
   );
 }
