@@ -64,12 +64,14 @@ function stripCalloutTag(node: ReactNode, tag: string): ReactNode {
 
   if (Array.isArray(node)) {
     let found = false;
-    const result = node.map((child) => {
+    const result = node.map((child, i) => {
       if (found) return child;
       const stripped = stripCalloutTag(child, tag);
       if (stripped !== child) found = true;
       return stripped;
-    }).filter(Boolean);
+    }).filter(Boolean).map((child, i) =>
+      isValidElement(child) ? cloneElement(child as ReactElement, { key: i }) : child
+    );
     return result;
   }
 
@@ -82,7 +84,9 @@ function stripCalloutTag(node: ReactNode, tag: string): ReactNode {
     const stripped = stripCalloutTag(child, tag);
     if (stripped !== child) found = true;
     return stripped;
-  }).filter(Boolean);
+  }).filter(Boolean).map((child, i) =>
+    isValidElement(child) ? cloneElement(child as ReactElement, { key: i }) : child
+  );
   return result.length === 1 ? result[0] : result;
 }
 
