@@ -1,7 +1,9 @@
 import type { MDXComponents } from "mdx/types";
 import { ImageLightbox } from "./image-lightbox";
+import { Blockquote } from "./callout";
 
 export const mdxComponents: MDXComponents = {
+  blockquote: (props) => <Blockquote {...props} />,
   h1: (props) => (
     <h1 className="font-serif text-3xl font-semibold mt-8 mb-4" {...props} />
   ),
