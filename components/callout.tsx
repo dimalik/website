@@ -98,11 +98,18 @@ export function Blockquote({ children, ...props }: React.BlockquoteHTMLAttribute
     const type = match[1].toUpperCase();
     const style = CALLOUT_TYPES[type];
     const cleaned = stripCalloutTag(children, match[1]);
+    const filteredChildren = Children.toArray(cleaned).filter((child) => {
+      if (isValidElement(child)) {
+        const content = getTextContent(child).trim();
+        if (content === "") return false;
+      }
+      return true;
+    });
 
     return (
       <div className={`border-l-4 ${style.border} ${style.bg} rounded-r-lg pl-4 pr-4 py-3 my-4`}>
         <p className={`font-semibold text-sm ${style.text} mb-1`}>{style.label}</p>
-        <div className="text-sm text-gray-700 dark:text-gray-300 [&>p]:m-0 [&>p:empty]:hidden">{cleaned}</div>
+        <div className="text-sm text-gray-700 dark:text-gray-300 [&>p]:m-0">{filteredChildren}</div>
       </div>
     );
   }
