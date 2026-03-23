@@ -50,11 +50,11 @@ So I came up with a simple set of "tools"; explain, chat, search, and add to not
 
 <Grid3>
 
-![First](/images/explanation.png)
+![Concept explanation](/images/explanation.png)
 
-![Third](/images/pdf_chat.png)
+![PDF annotation and chat](/images/pdf_chat.png)
 
-![Second](/images/chat.png)
+![Chatting about the paper](/images/chat.png)
 
 </Grid3>
 
@@ -68,28 +68,26 @@ One thing that has always annoyed me when I come across a paper with 50+ referen
 
 ### Analyze
 
-Now that I had a way to make connections between papers things started being more interesting. The first question I asked was "Maybe I can now also compare papers on their methodologies, claims, or results"
+Now that I had a way to make connections between papers things started being more interesting. The first question I asked was "Maybe I can now also compare papers on their methodologies, claims, or results." Sure enough that was the first thing I added; a way to get from contradictory claims from similar papers. To be fair though, this does not 100% understand the context so it might overstate some differences but language aside the content is not without merit. Also, I wanted to see the evolution of some ideas so I added an "Idea Timeline" section that takes into account the publication year as well as the content as finds dependencies, extensions, derivates of each work.
 
-Concepts
+<Grid2>
 
-Discovery
+![Contradiction identifier](/images/contradictions.png)
+
+![Timeline builder](/images/timeline.png)
+
+</Grid2>
 
 ### Making sense of the chaos
 
-research on categories and tags
-
-Insights
-
-Replication
+I really dislike categorizing; having to categorize 100 papers into ten groups is a nightmare-ish scenario. I would either make overly large categories (not very useful) or overly specific-ones (not very useful either). Same goes for tagging; I would either add tags like "nlp" or "ml" which would encompass 80% of the papers in my library right now, or something so specific only one paper out of 3000 would be relevant. This one required a lot of tuning and manual changes to generate tags and then categories but also keep the tags and categories maximally specific.
 
 ## Keeping costs down
 
-Obviously, something like this would increase my LLM costs
+Obviously, something like this would increase my LLM costs by a lot. If doing all of that is going to cost me a fortune, thanks but _no thanks_. I figured that given the size of my library, if I manage to keep the average cost of one paper at about $0.01, I'd be fine. My "algorithm" included how much would an off-the-shelf solution cost vs how many papers I expect to be processing on a daily basis. Papers costs $5.42/mo which would mean 542 papers/month with fewer features and still way beyond my more realistic 150/month expectation. That being said, keeping the costs down meant quite I had to keep an eye out for a few things.
 
-1. Deferring to simpler/classical approaches wherever possible (
-2. Focus on re-usability
-### Batch processing
-
-The simplest way to slash costs by half would be to simply use a Batch endpoint (offered both by Anthropic and OpenAI). This obviously would not work on a "I want results here and now" situation, but, frankly, this is hardly ever the case. In this case, might as well read the paper itself instead of processing it. Usually, I'll spend some time looking for papers, or, as we saw before "Save them for later". In these cases, batch processing is easy. If you import a large number of papers in a short period of time, the system smartly activates the batch processing mode in which case you'd need to wait for a bit more time slashing costs by half. 
+1. Deferring to simpler/classical approaches wherever possible. For example, extracting references does not require a separate call for the entire paper since these are mostly available online or easily parseable.
+2. The task is not so heavy reasoning-wise, so a model like Sonnet 4.6 seems to be doing an excellent job (frankly, I haven't even tried something like Haiku or the *-mini lineup from OpenAI).
+3. Batch processing. Probably the simplest way to slash costs by half would be to simply use a Batch endpoint (offered both by Anthropic and OpenAI). This obviously would not work on a "I want results here and now" situation, but, frankly, this is hardly ever the case. In this case, might as well read the paper itself instead of processing it. Usually, I'll spend some time looking for papers, or, as we saw before "Save them for later". In these cases, batch processing is easy. If you import a large number of papers in a short period of time, the system smartly activates the batch processing mode in which case you'd need to wait for a bit more time slashing costs by half. 
 
 _If you made it up to here, thank you for keeping up with my rambling. Stay tuned for Part II on how I added an agentic component to perform ML research (it's actually quite fun). You can try out the app [here](https://github.com/dimalik/arcana)._
