@@ -68,8 +68,11 @@ function LightboxOverlay({
           ›
         </span>
       )}
-      <span className="absolute bottom-4 text-white/50 text-sm">
-        {current + 1} / {images.length}
+      <span className="absolute bottom-4 text-white/70 text-sm text-center max-w-2xl px-4">
+        {img.alt && !img.alt.startsWith("img") && (
+          <span className="block mb-1">{img.alt}</span>
+        )}
+        <span className="text-white/40">{current + 1} / {images.length}</span>
       </span>
     </span>,
     document.body
