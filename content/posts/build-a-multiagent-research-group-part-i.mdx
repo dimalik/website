@@ -58,17 +58,21 @@ So I came up with a simple set of "tools": explain, chat, search, and add to not
 
 </Grid3>
 
+### Importing papers
+
+Now that I have the core capabilities I wanted ready, I needed a way to import papers easily. Claude, by default, added a few ways I would never use, like locating PDFs from my laptop, so I started by asking it to build a browser extension that would work on my most visited websites (e.g., arXiv, *cl, openreview, as well as when I have a PDF open), would locate the PDF and import it. This took a lot of fine-tuning and is constant work, but so far it works mostly well. Depending on the website, it can even locate figures, tables, references, and even the actual text, so I wouldn't need to parse the PDF, which is very helpful. I also added batch import functionality that takes a BibTeX file, locates the papers online, and adds them to Arcana using the Batch API to keep costs low (see [below](#keeping-costs-down)).
+
 ### Making connections
 
-At this point, I had a core capability ready and to be honest I started getting up to speed very quickly with things I missed. A lot of things were still manual but I seemed to be able to build a habit around this way of reading.
+At this point, I had everything I needed to get up to speed quickly on what I had missed. There was still a lot of manual work involved, but at this stage, I was able to build a habit around this way of reading.
 
-One thing that has always annoyed me when I come across a paper with 50+ references is that I see a reference I am interested in but cannot for the life of me figure out where exactly it was mentioned. So I built a fun little addition to the app that gets the extracted references, finds them in the text and then summarizes the context and why they are mentioned. This had a nice side-effect that when I saw some random paper in my list I don't really recognize I can try _why_ I added it in the first place.
+Then I noticed another thing that has always annoyed me when I come across a paper with 50+ references: I see a reference I am interested in, but cannot, for the life of me, figure out exactly where it was mentioned in the paper. This called for an interesting feature where Arcana would extract references, find where they occur in the text, and then summarize their context and why they are mentioned. This had a nice side effect: when I saw a random paper on my list that I didn't really recognize, I could figure out _why_ I'd added it in the first place.
 
 ![alt text](/images/connections.png "Connections")
 
 ### Analyze
 
-Now that I had a way to make connections between papers things started being more interesting. The first question I asked was "Maybe I can now also compare papers on their methodologies, claims, or results." Sure enough that was the first thing I added; a way to get from contradictory claims from similar papers. To be fair though, this does not 100% understand the context so it might overstate some differences but language aside the content is not without merit. Also, I wanted to see the evolution of some ideas so I added an "Idea Timeline" section that takes into account the publication year as well as the content as finds dependencies, extensions, derivates of each work.
+Now that I had a way to make connections between papers, things became even more interesting. The first feature I thought could help me would compare papers on their methodologies, claims, or results. Sure enough, that was the first thing I added: a way to get contradictory claims from similar papers. Reality check: Claude (or even GPT for that matter) does not 100% understand the context or the actual claims in some grander scheme of things, so they are prone to overstating some differences, but aside from this, it can make comparisons I didn't think I would make, which is always welcome. Another feature that would be more successful, at least in my opinion, that I wanted to add was a way to see the evolution of some ideas. Very often, when I start a new topic, I seem to skip some earlier, core paper I should've read. So, I added an "Idea Timeline" section that takes into account publication year and content, identifying dependencies, extensions, and derivatives of each work.
 
 <Grid2>
 
@@ -80,17 +84,17 @@ Now that I had a way to make connections between papers things started being mor
 
 ### Making sense of the chaos
 
-I really dislike categorizing; having to categorize 100 papers into ten groups is a nightmare-ish scenario. I would either make overly large categories (not very useful) or overly specific-ones (not very useful either). Same goes for tagging; I would either add tags like "nlp" or "ml" which would encompass 80% of the papers in my library right now, or something so specific only one paper out of 3000 would be relevant. This one required a lot of tuning and manual changes to generate tags and then categories but also keep the tags and categories maximally specific.
-
-I understand that doing what I do for a living, I should probably be worried, but there’s a part of me that was impressed when I said “add a recommender system for similar papers” and the thing just works. Admittedly, it required a lot of tuning and still can benefit from some expert intervention, but for a PoC for a personal project was way better than I could do (or, admittedly, as I’m told, friends who’ve worked on recommender systems given the problem and the timeline).
+I really dislike categorizing; having to categorize 100 papers into ten groups is a nightmare scenario for me. I would either worry that papers in one category are not that similar to be bundled together, ending up with almost the same number for papers and categories, or, to avoid this, include marginally relevant papers in the same category, ending up with something like "nlp" or "ml" as categories. I did not think this would be very useful, so I needed to brainstorm a bit more here. I thought of using tags, but doing so, I feared, would pose a very similar problem. I ended up with a bottom-up tag approach where Arcana periodically re-evaluates the tags to make them maximally specific. This addition required extensive tuning and manual changes to work well.
 
 
 ## Keeping costs down
 
-Obviously, something like this would increase my LLM costs by a lot. If doing all of that is going to cost me a fortune, thanks but _no thanks_. I figured that given the size of my library, if I manage to keep the average cost of one paper at about $0.01, I'd be fine. My "algorithm" included how much would an off-the-shelf solution cost vs how many papers I expect to be processing on a daily basis. Papers costs $5.42/mo which would mean 542 papers/month with fewer features and still way beyond my more realistic 150/month expectation. That being said, keeping the costs down meant quite I had to keep an eye out for a few things.
+Obviously, something like this would increase my LLM costs by a lot. If doing all of that is going to cost me a fortune, thanks but _no thanks_. I figured that given the size of my library and the number of papers I expect to process every day, if I manage to keep the average cost of one paper in the $0.01-$0.05 range, I'd be fine. My "algorithm" included how much would an off-the-shelf solution cost vs how many papers I expect to be processing on a daily basis. Papers costs $5.42/mo which would mean 542 papers/month with fewer features and still way beyond my more realistic 100 papers/month expectation. That being said, keeping the costs down meant quite I had to keep an eye out for a few things:
 
 1. Deferring to simpler/classical approaches wherever possible. For example, extracting references does not require a separate call for the entire paper since these are mostly available online or easily parseable.
-2. The task is not so heavy reasoning-wise, so a model like Sonnet 4.6 seems to be doing an excellent job (frankly, I haven't even tried something like Haiku or the *-mini lineup from OpenAI).
+2. The task is not so heavy reasoning-wise, so a cheaper model like Sonnet 4.6 would be more suitable here and, in fact, it actually does an excellent job (frankly, I haven't even tried something like Haiku or the *-mini lineup from OpenAI).
 3. Batch processing. Probably the simplest way to slash costs by half would be to simply use a Batch endpoint (offered both by Anthropic and OpenAI). This obviously would not work on a "I want results here and now" situation, but, frankly, this is hardly ever the case. In this case, might as well read the paper itself instead of processing it. Usually, I'll spend some time looking for papers, or, as we saw before "Save them for later". In these cases, batch processing is easy. If you import a large number of papers in a short period of time, the system smartly activates the batch processing mode in which case you'd need to wait for a bit more time slashing costs by half. 
+
+I ended up with an average cost<Fn>Average because not all papers have the same size (i.e., LLM input) nor do they need the same number of output tokens. Also, this estimate combines both immediate as well as batch processed papers.</Fn> of about $0.01-$0.02 per paper which I thought good enough for now (although I do have some ideas how to bring this down even more).
 
 _If you made it up to here, thank you for keeping up with my rambling. Stay tuned for Part II on how I added an agentic component to perform ML research (it's actually quite fun). You can try out the app [here](https://github.com/dimalik/arcana)._
