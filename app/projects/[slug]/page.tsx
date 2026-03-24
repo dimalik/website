@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getAllProjects, getProjectBySlug } from "@/lib/mdx";
 import { mdxComponents } from "@/components/mdx-components";
+import { FootnoteProvider } from "@/components/footnote";
 
 export async function generateStaticParams() {
   return getAllProjects().map((p) => ({ slug: p.slug }));
@@ -50,9 +51,11 @@ export default async function ProjectPage({
       <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">
         {project.description}
       </p>
-      <div className="prose dark:prose-invert max-w-none">
-        <MDXRemote source={project.content} components={mdxComponents} />
-      </div>
+      <FootnoteProvider>
+        <div className="prose dark:prose-invert max-w-none">
+          <MDXRemote source={project.content} components={mdxComponents} />
+        </div>
+      </FootnoteProvider>
     </article>
   );
 }

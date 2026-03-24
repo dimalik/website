@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getAllPosts, getPostBySlug } from "@/lib/mdx";
 import { mdxComponents } from "@/components/mdx-components";
+import { FootnoteProvider } from "@/components/footnote";
 
 export async function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -62,9 +63,11 @@ export default async function PostPage({
           </>
         )}
       </div>
-      <div className="prose dark:prose-invert max-w-none mt-8">
-        <MDXRemote source={post.content} components={mdxComponents} />
-      </div>
+      <FootnoteProvider>
+        <div className="prose dark:prose-invert max-w-none mt-8">
+          <MDXRemote source={post.content} components={mdxComponents} />
+        </div>
+      </FootnoteProvider>
     </article>
   );
 }
