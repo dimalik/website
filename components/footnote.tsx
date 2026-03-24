@@ -60,23 +60,27 @@ export function Footnotes() {
   const listRef = useRef<HTMLOListElement>(null);
 
   useEffect(() => {
-    const list = listRef.current;
-    if (!list) return;
-    list.innerHTML = "";
-    const notes = document.querySelectorAll("[data-fn]");
-    notes.forEach((note) => {
-      const id = note.getAttribute("data-fn");
-      const li = document.createElement("li");
-      li.id = `fn-${id}`;
-      li.innerHTML =
-        note.innerHTML +
-        ` <a href="#fnref-${id}" style="text-decoration:none">\u21a9</a>`;
-      li.querySelector("a:last-child")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        document.getElementById(`fnref-${id}`)?.scrollIntoView({ behavior: "smooth" });
+    // Delay to ensure all Fn components have mounted and rendered their data-fn spans
+    const timer = requestAnimationFrame(() => {
+      const list = listRef.current;
+      if (!list) return;
+      list.innerHTML = "";
+      const notes = document.querySelectorAll("[data-fn]");
+      notes.forEach((note) => {
+        const id = note.getAttribute("data-fn");
+        const li = document.createElement("li");
+        li.id = `fn-${id}`;
+        li.innerHTML =
+          note.innerHTML +
+          ` <a href="#fnref-${id}" style="text-decoration:none">\u21a9</a>`;
+        li.querySelector("a:last-child")?.addEventListener("click", (e) => {
+          e.preventDefault();
+          document.getElementById(`fnref-${id}`)?.scrollIntoView({ behavior: "smooth" });
+        });
+        list.appendChild(li);
       });
-      list.appendChild(li);
     });
+    return () => cancelAnimationFrame(timer);
   }, []);
 
   return (
