@@ -16,7 +16,7 @@ export default function WritingPage() {
 
   return (
     <div>
-      <h1 className="font-serif text-3xl font-semibold mb-8">Writing</h1>
+      <h1 className="font-sans text-3xl font-semibold mb-8">Writing</h1>
       <ul className="divide-y divide-gray-200 dark:divide-gray-800">
         {posts.map((post) => (
           <PostListItem

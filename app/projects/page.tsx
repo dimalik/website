@@ -16,7 +16,7 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      <h1 className="font-serif text-3xl font-semibold mb-8">Projects</h1>
+      <h1 className="font-sans text-3xl font-semibold mb-8">Projects</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {projects.map((project) => (
           <ProjectCard key={project.slug} project={project} />

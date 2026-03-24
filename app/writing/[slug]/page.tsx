@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypeSlug from "rehype-slug";
 import { getAllPosts, getPostBySlug } from "@/lib/mdx";
 import { mdxComponents } from "@/components/mdx-components";
 import { FootnoteProvider, Footnotes } from "@/components/footnote";
@@ -40,7 +41,7 @@ export default async function PostPage({
 
   return (
     <article>
-      <h1 className="font-serif text-3xl font-semibold mb-2">{post.title}</h1>
+      <h1 className="font-sans text-3xl font-semibold mb-2">{post.title}</h1>
       <div className="text-gray-500 dark:text-gray-400 text-sm flex gap-3">
         <time>
           {new Date(post.date).toLocaleDateString("en-US", {
@@ -65,7 +66,7 @@ export default async function PostPage({
       </div>
       <FootnoteProvider>
         <div className="prose dark:prose-invert max-w-none mt-8">
-          <MDXRemote source={post.content} components={mdxComponents} />
+          <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }} />
         </div>
         {post.content.includes("<Fn>") && <Footnotes />}
       </FootnoteProvider>

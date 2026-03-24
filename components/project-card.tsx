@@ -17,7 +17,7 @@ export function ProjectCard({ project }: { project: Project }) {
           />
         </div>
       )}
-      <h3 className="font-serif text-lg font-semibold group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">
+      <h3 className="font-sans text-lg font-semibold group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">
         {project.title}
       </h3>
       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">

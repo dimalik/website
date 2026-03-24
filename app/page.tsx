@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <div>
       <section>
-        <h1 className="font-serif text-3xl font-semibold mb-6">
+        <h1 className="font-sans text-3xl font-semibold mb-6">
           Dimitris Alikaniotis
         </h1>
         <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">

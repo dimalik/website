@@ -21,7 +21,7 @@ function YearGroupedList({ pubs }: { pubs: Publication[] }) {
     <>
       {years.map((year) => (
         <section key={year} className="mb-8">
-          <h3 className="font-serif text-lg font-semibold text-gray-500 dark:text-gray-400 mb-2">
+          <h3 className="font-sans text-lg font-semibold text-gray-500 dark:text-gray-400 mb-2">
             {year}
           </h3>
           <ul className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -68,19 +68,19 @@ export function PublicationsClient({
       />
       {peerReviewed.length > 0 && (
         <div className="mb-12">
-          <h2 className="font-serif text-xl font-semibold mb-4">Peer-Reviewed</h2>
+          <h2 className="font-sans text-xl font-semibold mb-4">Peer-Reviewed</h2>
           <YearGroupedList pubs={peerReviewed} />
         </div>
       )}
       {patents.length > 0 && (
         <div className="mb-12">
-          <h2 className="font-serif text-xl font-semibold mb-4">US Patents</h2>
+          <h2 className="font-sans text-xl font-semibold mb-4">US Patents</h2>
           <YearGroupedList pubs={patents} />
         </div>
       )}
       {other.length > 0 && (
         <div>
-          <h2 className="font-serif text-xl font-semibold mb-4">Other Publications</h2>
+          <h2 className="font-sans text-xl font-semibold mb-4">Other Publications</h2>
           <YearGroupedList pubs={other} />
         </div>
       )}

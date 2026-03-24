@@ -3,7 +3,7 @@ import { Publication } from "@/lib/types";
 export function PublicationEntry({ pub }: { pub: Publication }) {
   return (
     <li className="py-3">
-      <p className="font-serif text-base leading-snug">
+      <p className="font-sans text-base leading-snug">
         {pub.title}
       </p>
       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">

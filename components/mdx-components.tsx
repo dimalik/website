@@ -13,13 +13,13 @@ export const mdxComponents: MDXComponents = {
   Fn,
   blockquote: (props) => <Blockquote {...props} />,
   h1: (props) => (
-    <h1 className="font-serif text-3xl font-semibold mt-8 mb-4" {...props} />
+    <h1 className="font-sans text-3xl font-semibold mt-8 mb-4" {...props} />
   ),
   h2: (props) => (
-    <h2 className="font-serif text-2xl font-semibold mt-8 mb-3" {...props} />
+    <h2 className="font-sans text-2xl font-semibold mt-8 mb-3" {...props} />
   ),
   h3: (props) => (
-    <h3 className="font-serif text-xl font-semibold mt-6 mb-2" {...props} />
+    <h3 className="font-sans text-xl font-semibold mt-6 mb-2" {...props} />
   ),
   a: (props) => (
     <a

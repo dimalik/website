@@ -6,7 +6,7 @@ export function PostListItem({ item, href }: { item: LatestItem; href: string })
     <li>
       <Link href={href} className="group block py-3">
         <div className="flex items-baseline justify-between gap-4">
-          <h3 className="font-serif text-lg group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">
+          <h3 className="font-sans text-lg group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">
             {item.title}
           </h3>
           <time className="text-sm text-gray-500 dark:text-gray-400 shrink-0">

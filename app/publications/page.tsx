@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function PublicationsPage() {
   return (
     <div>
-      <h1 className="font-serif text-3xl font-semibold mb-8">Publications</h1>
+      <h1 className="font-sans text-3xl font-semibold mb-8">Publications</h1>
       <PublicationsClient publications={publications} />
     </div>
   );

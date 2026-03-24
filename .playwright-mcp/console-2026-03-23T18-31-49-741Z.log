@@ -1,0 +1,7 @@
+[   62926ms] [WARNING] [HMR] Invalid message: {"isTrusted":true}
+TypeError: Cannot convert undefined or null to object
+    at Object.keys (<anonymous>)
+    at extractModulesFromTurbopackMessage (http://localhost:3001/_next/static/chunks/0v1n_next_dist_client_039vg10._.js:13631:39)
+    at TurbopackHmr.onTurbopackMessage (http://localhost:3001/_next/static/chunks/0v1n_next_dist_client_039vg10._.js:13578:32)
+    at processMessage (http://localhost:3001/_next/static/chunks/0v1n_next_dist_client_039vg10._.js:13936:30)
+    at WebSocket.handleMessage (http://localhost:3001/_next/static/chunks/0v1n_next_dist_client_039vg10._.js:13335:52) @ http://localhost:3001/_next/static/chunks/0v1n_next_dist_0l12.vf._.js:2431

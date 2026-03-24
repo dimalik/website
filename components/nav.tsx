@@ -7,7 +7,7 @@ export function Nav() {
       <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between flex-wrap gap-2">
         <Link
           href="/"
-          className="font-serif text-lg font-semibold hover:text-accent dark:hover:text-accent-dark transition-colors"
+          className="font-sans text-lg font-semibold hover:text-accent dark:hover:text-accent-dark transition-colors"
         >
           Dimitris Alikaniotis
         </Link>

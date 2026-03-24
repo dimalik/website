@@ -31,7 +31,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark font-sans min-h-screen flex flex-col">
+      <body className="bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark font-serif min-h-screen flex flex-col">
         <Nav />
         <main className="flex-1 w-full max-w-3xl mx-auto px-6 py-12">
           {children}

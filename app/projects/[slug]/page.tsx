@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypeSlug from "rehype-slug";
 import { getAllProjects, getProjectBySlug } from "@/lib/mdx";
 import { mdxComponents } from "@/components/mdx-components";
 import { FootnoteProvider, Footnotes } from "@/components/footnote";
@@ -45,7 +46,7 @@ export default async function ProjectPage({
           <img src={project.image} alt={project.title} className="w-full" />
         </div>
       )}
-      <h1 className="font-serif text-3xl font-semibold mb-2">
+      <h1 className="font-sans text-3xl font-semibold mb-2">
         {project.title}
       </h1>
       <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">
@@ -53,7 +54,7 @@ export default async function ProjectPage({
       </p>
       <FootnoteProvider>
         <div className="prose dark:prose-invert max-w-none">
-          <MDXRemote source={project.content} components={mdxComponents} />
+          <MDXRemote source={project.content} components={mdxComponents} options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }} />
         </div>
         {project.content.includes("<Fn>") && <Footnotes />}
       </FootnoteProvider>
