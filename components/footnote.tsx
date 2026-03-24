@@ -1,22 +1,38 @@
 "use client";
 
-import { createContext, useContext, useRef, ReactNode } from "react";
-
-const FootnoteContext = createContext<{ current: number }>({ current: 0 });
+import { useEffect, useRef, useState, ReactNode } from "react";
 
 export function FootnoteProvider({ children }: { children: ReactNode }) {
-  const counter = useRef(0);
-  return (
-    <FootnoteContext.Provider value={counter}>
-      {children}
-    </FootnoteContext.Provider>
-  );
+  useEffect(() => {
+    fnCounter = 0;
+  }, []);
+  return <>{children}</>;
+}
+
+let fnCounter = 0;
+function getNextId() {
+  return ++fnCounter;
 }
 
 export function Fn({ children }: { children: ReactNode }) {
-  const counter = useContext(FootnoteContext);
-  counter.current += 1;
-  const id = counter.current;
+  const idRef = useRef<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (idRef.current === null) {
+      idRef.current = getNextId();
+    }
+    setMounted(true);
+    return () => {
+      // Reset counter when all components unmount (page navigation)
+    };
+  }, []);
+
+  if (!mounted) {
+    return <sup className="text-accent dark:text-accent-dark text-xs">*</sup>;
+  }
+
+  const id = idRef.current!;
 
   return (
     <span className="inline">
@@ -33,12 +49,7 @@ export function Fn({ children }: { children: ReactNode }) {
           {id}
         </a>
       </sup>
-      <span
-        id={`fn-${id}`}
-        data-fn={id}
-        data-content=""
-        className="hidden"
-      >
+      <span data-fn={id} className="hidden">
         {children}
       </span>
     </span>
@@ -46,30 +57,33 @@ export function Fn({ children }: { children: ReactNode }) {
 }
 
 export function Footnotes() {
-  return <FootnoteList />;
-}
+  const listRef = useRef<HTMLOListElement>(null);
 
-function FootnoteList() {
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    list.innerHTML = "";
+    const notes = document.querySelectorAll("[data-fn]");
+    notes.forEach((note) => {
+      const id = note.getAttribute("data-fn");
+      const li = document.createElement("li");
+      li.id = `fn-${id}`;
+      li.innerHTML =
+        note.innerHTML +
+        ` <a href="#fnref-${id}" style="text-decoration:none">\u21a9</a>`;
+      li.querySelector("a:last-child")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById(`fnref-${id}`)?.scrollIntoView({ behavior: "smooth" });
+      });
+      list.appendChild(li);
+    });
+  }, []);
+
   return (
     <section className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 text-sm text-gray-600 dark:text-gray-400">
-      <ol className="list-decimal pl-5 space-y-2 [&_a]:text-accent dark:[&_a]:text-accent-dark" id="footnote-list" />
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function() {
-              var notes = document.querySelectorAll('[data-fn]');
-              var list = document.getElementById('footnote-list');
-              if (!list) return;
-              notes.forEach(function(note) {
-                var id = note.getAttribute('data-fn');
-                var li = document.createElement('li');
-                li.id = 'fn-' + id;
-                li.innerHTML = note.innerHTML + ' <a href="#fnref-' + id + '">\u21a9</a>';
-                list.appendChild(li);
-              });
-            })();
-          `,
-        }}
+      <ol
+        ref={listRef}
+        className="list-decimal pl-5 space-y-2 [&_a]:text-accent dark:[&_a]:text-accent-dark"
       />
     </section>
   );
