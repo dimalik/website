@@ -3,7 +3,7 @@ import { ImageLightbox } from "./image-lightbox";
 import { Blockquote } from "./callout";
 import { Grid2, Grid3, Grid4 } from "./grid";
 import { Caption } from "./caption";
-import { Fn, Footnotes } from "./footnote";
+import { Fn } from "./footnote";
 
 export const mdxComponents: MDXComponents = {
   Grid2,
@@ -11,7 +11,6 @@ export const mdxComponents: MDXComponents = {
   Grid4,
   Caption,
   Fn,
-  Footnotes,
   blockquote: (props) => <Blockquote {...props} />,
   h1: (props) => (
     <h1 className="font-serif text-3xl font-semibold mt-8 mb-4" {...props} />
